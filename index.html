@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body style="overflow-x:hidden;">
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Fredoka:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#FBF7EF;font-family:'DM Sans',sans-serif;color:#3A3A30;}
+  a{color:#C4623B;text-decoration:none;}
+  a:hover{color:#4B5D3A;}
+  h1,h2,h3,h4{font-family:'Chelsea Market',cursive;margin:0;font-weight:400;}
+  * { box-sizing: border-box; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  @media (max-width:860px) { .decor-mobile-hide, .bg-rotor { display:none !important; } }
+  @media (max-width:860px) { .hero-book-btn { display:none !important; } }
+  .mobile-sticky-cta { display:none; }
+  @media (max-width:860px) {
+    .mobile-sticky-cta { display:flex; position:fixed; left:0; right:0; bottom:0; z-index:55; gap:12px; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); background:#fff; box-shadow:0 -4px 20px rgba(0,0,0,0.12); transition:transform 0.3s ease; }
+    .mobile-sticky-cta.cta-hidden { transform:translateY(100%); }
+    .mobile-sticky-cta a { flex:1; text-align:center; padding:14px 12px; border-radius:100px; font-weight:700; font-size:15px; box-sizing:border-box; }
+    .mobile-sticky-cta a.book-now { background:#C4623B; color:#fff; }
+    .mobile-sticky-cta a.call-now { background:transparent; color:#4B5D3A; border:2px solid #4B5D3A; padding:12px 12px; }
+    body { padding-bottom:74px; }
+    .steps-logo-marquee { margin-top:20px !important; padding:16px 0 !important; }
+    .steps-logo-marquee img { height:48px !important; }
+    .steps-logo-marquee span:first-child { font-size:16px !important; }
+    .steps-logo-marquee > div > div { gap:32px !important; padding-right:32px !important; }
+  }
+  @media (max-width:860px) { .gallery-grid-desktop { display:none !important; } }
+  @keyframes floatCard { 0%,100% { transform:translateY(0) translateX(0); } 25% { transform:translateY(-8px) translateX(6px); } 50% { transform:translateY(-14px) translateX(0); } 75% { transform:translateY(-8px) translateX(-6px); } }
+  @keyframes photoMarquee { from { transform:translateX(0%); } to { transform:translateX(-50%); } }
+  @keyframes heroCursorBlink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+  .tilt-3d { transition:transform 0.2s ease-out; will-change:transform; }
+  @keyframes openingPop { 0% { opacity:0; transform:scale(0.5) rotate(-8deg); } 55% { opacity:1; transform:scale(1.1) rotate(4deg); } 75% { transform:scale(0.97) rotate(-2deg); } 100% { opacity:1; transform:scale(1) rotate(0deg); } }
+  @keyframes openingWobble { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-8px) rotate(2deg); } }
+  @keyframes openingFadeOut { to { opacity:0; visibility:hidden; } }
+  #opening-logo { position:fixed; inset:0; z-index:9999; background:#FBF7EF; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; animation:openingFadeOut 0.6s ease forwards; animation-delay:2.1s; }
+  #opening-logo img { height:220px; width:auto; animation:openingPop 0.9s cubic-bezier(.34,1.56,.64,1) both, openingWobble 1.6s ease-in-out 0.9s infinite; }
+  #opening-logo p { font-family:'Chelsea Market',cursive; font-size:20px; color:#4B5D3A; margin-top:18px; opacity:0; animation:fadeUp 0.7s ease-out both; animation-delay:0.7s; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="./image-slot.js"></script>
+</helmet>
+
+<svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <clipPath id="blob1" clipPathUnits="objectBoundingBox">
+      <path d="M 1.000 0.500 Q 1.000 0.500 0.942 0.661 Q 0.883 0.821 0.729 0.871 Q 0.574 0.920 0.445 0.869 Q 0.316 0.819 0.180 0.742 Q 0.044 0.666 0.037 0.497 Q 0.030 0.329 0.146 0.209 Q 0.263 0.089 0.416 0.099 Q 0.569 0.109 0.687 0.176 Q 0.806 0.243 0.903 0.372 Z"/>
+    </clipPath>
+    <clipPath id="blob2" clipPathUnits="objectBoundingBox">
+      <path d="M 1.000 0.500 Q 1.000 0.500 0.930 0.651 Q 0.859 0.801 0.710 0.821 Q 0.560 0.840 0.424 0.853 Q 0.288 0.867 0.159 0.769 Q 0.030 0.671 0.030 0.500 Q 0.030 0.329 0.165 0.240 Q 0.299 0.152 0.433 0.136 Q 0.567 0.119 0.725 0.149 Q 0.883 0.179 0.942 0.339 Z"/>
+    </clipPath>
+    <clipPath id="blob3" clipPathUnits="objectBoundingBox">
+      <path d="M 0.954 0.500 Q 0.954 0.500 0.873 0.623 Q 0.793 0.746 0.682 0.825 Q 0.571 0.905 0.411 0.919 Q 0.250 0.933 0.140 0.802 Q 0.030 0.671 0.084 0.520 Q 0.138 0.368 0.232 0.283 Q 0.326 0.199 0.456 0.103 Q 0.587 0.008 0.735 0.093 Q 0.883 0.179 0.919 0.339 Z"/>
+    </clipPath>
+    <clipPath id="blob4" clipPathUnits="objectBoundingBox">
+      <path d="M 0.878 0.500 Q 0.878 0.500 0.829 0.618 Q 0.781 0.736 0.684 0.861 Q 0.586 0.987 0.418 0.960 Q 0.250 0.933 0.179 0.788 Q 0.108 0.643 0.131 0.508 Q 0.154 0.374 0.209 0.232 Q 0.264 0.091 0.425 0.049 Q 0.587 0.008 0.735 0.093 Q 0.883 0.179 0.880 0.339 Z"/>
+    </clipPath>
+    <clipPath id="blob5" clipPathUnits="objectBoundingBox">
+      <path d="M 0.887 0.500 Q 0.887 0.500 0.880 0.656 Q 0.872 0.812 0.730 0.902 Q 0.587 0.992 0.418 0.963 Q 0.250 0.933 0.188 0.785 Q 0.126 0.636 0.105 0.493 Q 0.085 0.349 0.170 0.212 Q 0.255 0.076 0.421 0.042 Q 0.587 0.008 0.717 0.108 Q 0.846 0.209 0.867 0.355 Z"/>
+    </clipPath>
+    <clipPath id="blob6" clipPathUnits="objectBoundingBox">
+      <path d="M 0.956 0.500 Q 0.956 0.500 0.920 0.661 Q 0.883 0.821 0.735 0.907 Q 0.587 0.992 0.447 0.913 Q 0.308 0.833 0.237 0.727 Q 0.166 0.622 0.098 0.475 Q 0.030 0.329 0.140 0.198 Q 0.250 0.067 0.416 0.051 Q 0.582 0.035 0.682 0.150 Q 0.781 0.264 0.869 0.382 Z"/>
+    </clipPath>
+    <clipPath id="squircleA" clipPathUnits="objectBoundingBox">
+      <path d="M 0.420 0 L 0.900 0 Q 1 0 1 0.100 L 1 0.580 Q 1 1 0.580 1 L 0.100 1 Q 0 1 0 0.900 L 0 0.420 Q 0 0 0.420 0 Z"/>
+    </clipPath>
+    <clipPath id="squircleB" clipPathUnits="objectBoundingBox">
+      <path d="M 0.100 0 L 0.580 0 Q 1 0 1 0.420 L 1 0.900 Q 1 1 0.900 1 L 0.420 1 Q 0 1 0 0.580 L 0 0.100 Q 0 0 0.100 0 Z"/>
+    </clipPath>
+  </defs>
+</svg>
+<div id="opening-logo"><img src="./assets/littlebuds-logo.webp" alt="Little Buds Pediatric Dentistry"/></div>
+
+<div class="mobile-sticky-cta">
+  <a href="#contact" class="book-now">Book Now</a>
+  <a href="tel:+18046010469" class="call-now"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="display:inline-block;vertical-align:-3px;margin-right:6px;"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Call Now</a>
+</div>
+
+<div style="max-width:100%;background:#FBF7EF;">
+
+  <!-- HEADER -->
+  <header style="position:fixed;top:0;left:0;right:0;z-index:50;">
+    <div style="position:absolute;inset:0;background:{{ headerBg }};border-bottom:1px solid {{ headerBorder }};box-shadow:{{ headerShadow }};backdrop-filter:{{ headerBlur }};transition:background 0.25s ease,border-color 0.25s ease,box-shadow 0.25s ease;"></div>
+    <div style="max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:flex-start;position:relative;">
+    <div style="width:100%;min-width:0;padding:8px 32px 8px 0;display:flex;align-items:center;justify-content:space-between;gap:22px;position:relative;">
+      <img src="./assets/littlebuds-logo.webp" alt="Little Buds Pediatric Dentistry" style="height:{{ logoHeight }};width:auto;display:block;filter:{{ logoFilter }};transition:filter 0.25s ease,height 0.25s ease;flex-shrink:0;margin-left:24px;"/>
+      <div style="display:{{ navDisplay }};align-items:center;justify-content:flex-end;gap:48px;min-width:0;">
+        <nav style="display:flex;align-items:center;gap:48px;font-weight:600;color:{{ navTextColor }};font-size:14px;white-space:nowrap;">
+          <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Home</a>
+          <a href="#meet" style="color:{{ navTextColor }};white-space:nowrap;">About Us</a>
+          <div style="position:relative;" onMouseEnter="{{ openServices }}" onMouseLeave="{{ closeServices }}">
+            <span style="color:{{ navTextColor }};cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;">Services <span style="font-size:11px;">&#9662;</span></span>
+            <sc-if value="{{ servicesOpen }}">
+              <div style="position:absolute;top:28px;left:0;background:#fff;border:1px solid #EEE7D8;border-radius:14px;padding:10px;min-width:200px;display:flex;flex-direction:column;gap:2px;">
+                <a href="#services" style="color:#3F4A32;padding:9px 12px;border-radius:8px;font-weight:500;" style-hover="background:#EEF0E3;">Preventive Dentistry</a>
+                <a href="#services" style="color:#3F4A32;padding:9px 12px;border-radius:8px;font-weight:500;" style-hover="background:#EEF0E3;">Infant Dentistry</a>
+                <a href="#services" style="color:#3F4A32;padding:9px 12px;border-radius:8px;font-weight:500;" style-hover="background:#EEF0E3;">Restorative Dentistry</a>
+                <a href="#services" style="color:#3F4A32;padding:9px 12px;border-radius:8px;font-weight:500;" style-hover="background:#EEF0E3;">Emergency Dentistry</a>
+              </div>
+            </sc-if>
+          </div>
+        </nav>
+        <div style="display:flex;align-items:center;gap:48px;font-weight:600;color:{{ navTextColor }};font-size:14px;white-space:nowrap;">
+          <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Membership Plans</a>
+          <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Blog</a>
+          <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Referrals</a>
+          <a href="tel:+18046010469" style="font-weight:700;color:{{ navTextColor }};font-size:14px;white-space:nowrap;">(804) 601-0469</a>
+          <a href="#contact" style="background:#C4623B;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;white-space:nowrap;flex-shrink:0;" style-hover="background:#A94F2E;">Book Appointment</a>
+        </div>
+      </div>
+      <button onClick="{{ toggleMenu }}" style="display:{{ burgerDisplay }};position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:28px;color:{{ navTextColor }};cursor:pointer;padding:4px 8px;">&#9776;</button>
+    </div>
+    </div>
+    <sc-if value="{{ menuOpen }}">
+      <div style="display:flex;flex-direction:column;gap:16px;padding:18px 24px 24px;border-top:1px solid #EAE3D2;font-weight:600;color:#3F4A32;background:#FBF7EF;">
+        <a href="#" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Home</a>
+        <a href="#meet" onClick="{{ toggleMenu }}" style="color:#3F4A32;">About Us</a>
+        <a href="#services" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Services</a>
+        <a href="#" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Membership Plans</a>
+        <a href="#" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Blog</a>
+        <a href="#" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Referrals</a>
+        <a href="#contact" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Contact</a>
+        <a href="tel:+18046010469" style="background:transparent;color:#4B5D3A;border:2px solid #4B5D3A;padding:12px 32px;border-radius:100px;font-weight:700;font-size:15px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Call (804) 601-0469</a>
+        <a href="#contact" onClick="{{ toggleMenu }}" style="background:#C4623B;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;text-align:center;">Book Appointment</a>
+      </div>
+    </sc-if>
+  </header>
+
+  <!-- HERO -->
+  <section style="position:relative;height:100vh;height:100dvh;width:100%;overflow:hidden;">
+    <img class="decor-mobile-hide" src="./assets/pattern-5.svg" alt="" style="position:absolute;top:14%;right:8%;width:90px;height:auto;opacity:0.6;pointer-events:none;z-index:2;"/>
+    <image-slot id="hero-poster" shape="rect" fit="cover" placeholder="Drop a hero photo (shows if the video can't load)" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;"></image-slot>
+    <video autoplay muted loop playsinline poster="./assets/little-smiles-poster.webp" id="hero-video-el" onError="{{ handleVideoError }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:{{ videoDisplay }};background:transparent;">
+      <source src="./assets/little-smiles-2.mp4?v=3" type="video/mp4">
+    </video>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(47,59,38,0.35) 0%,rgba(40,48,32,0.72) 100%);z-index:2;pointer-events:none;"></div>
+    <div style="position:relative;z-index:3;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:{{ heroPadding }};">
+      <h1 style="font-family:'Chelsea Market',cursive;font-weight:600;font-size:clamp(24px,8vw,84px);line-height:1.15;color:#fff;white-space:{{ heroHeadingWrap }};text-shadow:0 4px 24px rgba(0,0,0,0.25);animation:fadeUp 0.7s ease-out both;animation-delay:0.1s;max-width:95vw;">Where health <span id="hero-typed-white"></span><span id="hero-typed-orange" style="color:#E2794F;"></span><span id="hero-typed-cursor" style="display:inline-block;width:2px;background:#fff;animation:heroCursorBlink 0.8s step-end infinite;">&nbsp;</span></h1>
+      <div style="display:flex;align-items:center;gap:16px;margin:22px 0 6px;animation:fadeUp 0.7s ease-out both;animation-delay:0.28s;flex-wrap:wrap;justify-content:center;">
+        <span style="width:56px;height:1px;background:rgba(255,255,255,0.5);display:{{ heroLineDisplay }};"></span>
+        <span style="background:rgba(245,241,228,0.35);color:#fff;font-family:'Chelsea Market',cursive;font-weight:600;font-size:clamp(12px,3.5vw,16px);padding:8px 18px;border-radius:100px;white-space:normal;max-width:90vw;">Midlothian &amp; Chesterfield County's Pediatric Dentist</span>
+        <span style="width:56px;height:1px;background:rgba(255,255,255,0.5);display:{{ heroLineDisplay }};"></span>
+      </div>
+      <p style="font-size:19px;line-height:1.65;color:#F5F1E4;margin-top:16px;max-width:800px;animation:fadeUp 0.7s ease-out both;animation-delay:0.4s;">Dr. Vidisha Patel believes every child deserves a dental experience built on kindness and care — a welcoming space to build healthy, confident smiles.</p>
+      <a href="#contact" class="hero-book-btn" style="display:inline-block;margin-top:30px;background:transparent;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;border:2px solid #fff;animation:fadeUp 0.7s ease-out both;animation-delay:0.55s;" style-hover="background:#fff;color:#3F4A32;">Book an Appointment</a>
+    </div>
+    <svg width="100%" height="90" viewBox="0 0 1440 90" preserveAspectRatio="none" style="position:absolute;bottom:-1px;left:0;z-index:4;pointer-events:none;">
+      <path d="M0,90 L0,50 C240,90 480,10 720,42 C960,74 1200,20 1440,56 L1440,90 Z" fill="#FBF7EF"/>
+    </svg>
+  </section>
+
+
+  <!-- MEET THE DENTIST -->
+  <section id="meet" style="max-width:1280px;margin:0 auto;padding:100px 24px 24px;position:relative;overflow:hidden;display:grid;grid-template-columns:{{ meetCols }};column-gap:60px;row-gap:20px;align-items:center;">
+    <img class="decor-mobile-hide" src="./assets/leaf-branch-sticker.svg" alt="" style="position:absolute;top:30px;right:30px;width:120px;height:auto;transform:rotate(15deg);opacity:0.9;pointer-events:none;z-index:0;"/>
+    <svg class="bg-rotor" width="360" height="360" viewBox="0 0 100 100" style="position:absolute;top:-4%;right:-6%;opacity:0.55;pointer-events:none;z-index:0;">
+      <g fill="#EAF0DE">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <div style="position:relative;">
+      <image-slot id="dentist-photo" shape="rect" mask="polygon(96.98% 50.00%, 97.33% 56.23%, 96.13% 62.36%, 94.06% 68.25%, 90.89% 73.61%, 87.14% 78.50%, 83.11% 83.11%, 78.54% 87.19%, 73.87% 91.34%, 68.04% 93.56%, 62.08% 95.10%, 55.96% 95.30%, 50.00% 96.71%, 43.83% 96.85%, 37.79% 95.58%, 31.85% 93.82%, 26.09% 91.41%, 20.36% 88.62%, 15.94% 84.06%, 12.70% 78.62%, 10.06% 73.06%, 7.51% 67.60%, 5.71% 61.87%, 4.29% 56.02%, 4.30% 50.00%, 4.74% 44.04%, 5.53% 38.08%, 7.20% 32.27%, 8.89% 26.26%, 12.27% 21.05%, 16.17% 16.17%, 21.17% 12.43%, 26.22% 8.82%, 31.90% 6.31%, 37.84% 4.62%, 43.81% 2.95%, 50.00% 1.78%, 56.40% 1.41%, 62.58% 3.05%, 68.23% 5.99%, 73.39% 9.49%, 78.11% 13.36%, 82.41% 17.59%, 86.97% 21.64%, 90.49% 26.62%, 94.21% 31.69%, 95.70% 37.75%, 96.98% 43.81%)" fit="cover" placeholder="Dr. Patel's photo (per client email)" src="./assets/dentist-photo.webp" style="width:100%;aspect-ratio:4/5;"></image-slot>
+      <svg width="26" height="26" viewBox="0 0 24 24" style="position:absolute;top:-6px;right:18%;color:#C4623B;"><path d="M12 2l1.6 6.2L20 10l-6.4 1.8L12 18l-1.6-6.2L4 10l6.4-1.8z" fill="currentColor" opacity="0.7"/></svg>
+      <svg width="26" height="14" viewBox="0 0 46 24" style="position:absolute;bottom:8%;left:-14px;transform:rotate(-25deg);"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/><path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/></svg>
+    </div>
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
+        <h2 style="font-size:clamp(32px,4.2vw,46px);color:#3F4A32;">Meet Dr. Vidisha Patel!</h2>
+      </div>
+      <p style="font-size:16.5px;line-height:1.75;color:#55564A;">Dr. Vidisha Patel founded Little Buds Pediatric Dentistry to give children in Midlothian and throughout Chesterfield County a place where they can feel comfortable and confident at the dentist. With compassion and patience at the heart of every visit, she's dedicated to helping your child build healthy habits and a positive relationship with dental care that lasts a lifetime.</p>
+      <a href="#contact" style="display:inline-block;margin-top:22px;background:#C4623B;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;" style-hover="background:#A94F2E;">Know More</a>
+    </div>
+    <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:{{ logosGap }};margin-top:20px;flex-wrap:nowrap;">
+      <img src="./assets/logo-college-diplomates-mono.webp" alt="College of Diplomates" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
+      <img src="./assets/logo-aapd-mono.webp" alt="American Academy of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
+      <img src="./assets/logo-abpd-mono.webp" alt="American Board of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" style="background:#EEF1E6;padding:110px 24px;position:relative;overflow:hidden;">
+    <svg class="bg-rotor" width="400" height="400" viewBox="0 0 100 100" style="position:absolute;top:-6%;left:-6%;opacity:0.55;pointer-events:none;z-index:0;">
+      <g fill="#EAF0DE">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <svg width="100%" height="70" viewBox="0 0 1440 70" preserveAspectRatio="none" style="position:absolute;top:0;left:0;pointer-events:none;">
+      <path d="M0,0 L1440,0 L1440,26 C1200,58 960,6 720,32 C480,58 240,10 0,36 Z" fill="#FBF7EF"/>
+    </svg>
+    <svg width="100%" height="70" viewBox="0 0 1440 70" preserveAspectRatio="none" style="position:absolute;bottom:-1px;left:0;pointer-events:none;">
+      <path d="M0,70 L0,34 C240,60 480,12 720,38 C960,64 1200,16 1440,44 L1440,70 Z" fill="#FBF7EF"/>
+    </svg>
+    <div style="max-width:1280px;margin:0 auto;position:relative;">
+      <div style="text-align:center;max-width:640px;margin:0 auto 50px;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
+          <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
+          <h2 style="font-size:clamp(32px,4.2vw,46px);color:#3F4A32;">Take a look inside</h2>
+        </div>
+        <p style="font-size:15.5px;line-height:1.7;color:#66675A;margin-top:14px;">A calm, playful space designed around growing smiles — from our reception nook to our treatment rooms.</p>
+      </div>
+    </div>
+    <div class="gallery-grid-desktop" style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px;position:relative;">
+      <div class="tilt-3d" style="border-radius:20px;overflow:hidden;aspect-ratio:16/10;">
+        <img src="./assets/office-1.webp" alt="" style="width:100%;height:100%;object-fit:cover;"/>
+      </div>
+      <div class="tilt-3d" style="border-radius:20px;overflow:hidden;aspect-ratio:16/10;">
+        <img src="./assets/office-6.webp" alt="" style="width:100%;height:100%;object-fit:cover;"/>
+      </div>
+    </div>
+    <div class="gallery-marquee-mobile" style="overflow:hidden;margin-top:50px;">
+      <div style="display:flex;width:max-content;animation:photoMarquee 32s linear infinite;">
+        <div style="display:flex;gap:20px;padding-right:20px;">
+          <img src="./assets/office-1.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-2.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-3.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-4.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-5.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-6.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+        </div>
+        <div style="display:flex;gap:20px;padding-right:20px;" aria-hidden="true">
+          <img src="./assets/office-1.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-2.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-3.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-4.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-5.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+          <img src="./assets/office-6.webp" alt="" style="width:320px;height:220px;object-fit:cover;border-radius:20px;"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES: image left, 2x2 grid right, leaf wreath accents echoing the logo -->
+  <section id="principles" style="background:#E7E0C7;padding:110px 0;position:relative;overflow:hidden;">
+    <svg width="100%" height="70" viewBox="0 0 1440 70" preserveAspectRatio="none" style="position:absolute;top:0;left:0;pointer-events:none;">
+      <path d="M0,0 L1440,0 L1440,26 C1200,58 960,6 720,32 C480,58 240,10 0,36 Z" fill="#FBF7EF"/>
+    </svg>
+    <svg width="100%" height="70" viewBox="0 0 1440 70" preserveAspectRatio="none" style="position:absolute;bottom:-1px;left:0;pointer-events:none;">
+      <path d="M0,70 L0,34 C240,60 480,12 720,38 C960,64 1200,16 1440,44 L1440,70 Z" fill="#FBF7EF"/>
+    </svg>
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px;position:relative;display:grid;grid-template-columns:{{ principlesCols }};gap:60px;align-items:center;">
+    <svg class="bg-rotor" width="400" height="400" viewBox="0 0 100 100" style="position:absolute;bottom:-8%;right:-6%;opacity:0.55;pointer-events:none;z-index:0;">
+      <g fill="#EAF0DE">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <svg width="90" height="140" viewBox="0 0 46 70" style="position:absolute;top:-10px;right:6%;opacity:0.4;transform:rotate(20deg);pointer-events:none;">
+      <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/><path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/>
+      <path d="M6 50 Q14 32 28 36 Q22 50 6 50 Z" fill="#C9D4B6"/><path d="M6 50 Q16 38 28 36" stroke="#8FA06E" stroke-width="1" fill="none"/>
+    </svg>
+    <svg width="70" height="110" viewBox="0 0 46 70" style="position:absolute;bottom:-16px;left:8%;opacity:0.35;transform:rotate(-160deg);pointer-events:none;">
+      <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/><path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/>
+      <path d="M6 50 Q14 32 28 36 Q22 50 6 50 Z" fill="#C9D4B6"/><path d="M6 50 Q16 38 28 36" stroke="#8FA06E" stroke-width="1" fill="none"/>
+    </svg>
+    <div style="position:relative;">
+      <image-slot id="principles-photo" shape="rect" mask="polygon(92.61% 50.00%, 90.29% 55.30%, 87.59% 60.07%, 84.71% 64.38%, 81.77% 68.34%, 78.78% 72.09%, 75.69% 75.69%, 72.39% 79.17%, 68.75% 82.48%, 64.70% 85.50%, 60.21% 88.09%, 55.28% 90.10%, 50.00% 91.41%, 44.48% 91.94%, 38.84% 91.63%, 33.23% 90.49%, 27.76% 88.53%, 22.55% 85.78%, 17.72% 82.28%, 13.40% 78.08%, 9.75% 73.24%, 6.91% 67.85%, 5.03% 62.05%, 4.24% 56.02%, 4.59% 50.00%, 6.06% 44.21%, 8.55% 38.89%, 11.87% 34.20%, 15.76% 30.23%, 19.98% 26.97%, 24.29% 24.29%, 28.53% 22.02%, 32.65% 19.95%, 36.71% 17.91%, 40.83% 15.77%, 45.20% 13.57%, 50.00% 11.43%, 55.32% 9.61%, 61.15% 8.40%, 67.35% 8.12%, 73.65% 9.04%, 79.70% 11.30%, 85.11% 14.89%, 89.54% 19.66%, 92.72% 25.34%, 94.53% 31.56%, 94.99% 37.94%, 94.27% 44.17%)" fit="cover" placeholder="A calm treatment-room or lobby photo" src="./assets/principles-photo.webp" style="width:100%;aspect-ratio:4/5;"></image-slot>
+      <svg width="24" height="24" viewBox="0 0 24 24" style="position:absolute;top:4%;right:-10px;color:#8FA06E;"><path d="M12 2l1.6 6.2L20 10l-6.4 1.8L12 18l-1.6-6.2L4 10l6.4-1.8z" fill="currentColor" opacity="0.65"/></svg>
+      <svg width="24" height="13" viewBox="0 0 46 24" style="position:absolute;bottom:-4px;left:14%;transform:rotate(15deg);"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/><path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/></svg>
+    </div>
+    <div style="position:relative;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
+        <svg width="34" height="18" viewBox="0 0 46 24">
+          <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/>
+          <path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/>
+          <path d="M22 20 Q30 4 44 8 Q38 22 22 20 Z" fill="#C9D4B6"/>
+          <path d="M22 20 Q32 10 44 8" stroke="#8FA06E" stroke-width="1" fill="none"/>
+        </svg>
+        <h2 style="font-size:clamp(30px,3.8vw,42px);color:#3F4A32;">A little different, on purpose</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ principlesInnerCols }};row-gap:36px;column-gap:36px;">
+        <sc-for list="{{ principles }}" as="p" hint-placeholder-count="4">
+          <div style="border-left:2px solid #8FA06E;padding-left:16px;">
+            <div style="width:52px;height:52px;margin-bottom:10px;">
+              <img src="{{ p.iconImg }}" alt="" style="width:100%;height:100%;object-fit:contain;"/>
+            </div>
+            <h3 style="font-size:17px;color:#3F4A32;margin-bottom:8px;">{{ p.title }}</h3>
+            <p style="font-size:14px;line-height:1.6;color:#5A5B4F;margin:0;">{{ p.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- FIRST VISIT -->
+  <section id="first-visit" style="background:#FBF7EF;padding:100px 24px;position:relative;overflow:hidden;">
+    <svg class="bg-rotor" width="110" height="120" viewBox="0 0 200 220" style="position:absolute;top:0;right:8%;opacity:0.9;pointer-events:none;z-index:0;">
+      <path d="M60 195 C40 140 70 60 130 10 C145 70 115 155 65 200 Z" fill="#B7C4A0"/>
+      <path d="M60 200 C90 178 145 178 175 200 C145 222 90 222 60 200 Z" fill="#C7D2B8"/>
+    </svg>
+    <svg class="bg-rotor" width="380" height="380" viewBox="0 0 100 100" style="position:absolute;top:8%;right:-8%;opacity:0.55;pointer-events:none;z-index:0;">
+      <g fill="#EAF0DE">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <div style="max-width:1160px;margin:0 auto;">
+      <div style="text-align:center;max-width:640px;margin:0 auto 90px;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
+          <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
+          <h2 style="font-size:clamp(32px,4.2vw,46px);color:#4B5D3A;">Preparing for your child's first visit</h2>
+        </div>
+        <p style="font-size:15.5px;line-height:1.7;color:#55564A;margin-top:16px;">Taking the time to prepare will ensure it's smooth and seamless. Let us know if there's anything we can do to help make it a memorable experience.</p>
+      </div>
+      <div style="{{ stepsContainerStyle }}">
+        <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+          <div style="{{ st.wrapperStyle }}">
+            <div style="background:{{ st.cardBg }};border-radius:58% 42% 46% 54% / 46% 40% 60% 54%;padding:56px 34px 34px;text-align:center;position:relative;transform:rotate({{ st.mobileTilt }});">
+              <div style="position:absolute;top:-52px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <img src="./assets/badge-sage.webp" alt="" style="width:84px;height:84px;object-fit:contain;"/>
+                <span style="background:{{ st.badgeBg }};color:#fff;font-size:11px;letter-spacing:0.5px;padding:3px 12px;border-radius:100px;">Step {{ st.n }}</span>
+              </div>
+              <h3 style="font-size:20px;color:#3F4A32;margin:14px 0 12px;">{{ st.title }}</h3>
+              <p style="font-size:14.5px;line-height:1.6;color:#55564A;margin:0 0 22px;">{{ st.body }}</p>
+              <a href="#contact" style="display:inline-block;background:#fff;color:#3F4A32;padding:11px 22px;border-radius:100px;font-weight:600;font-size:13px;" style-hover="background:#EEF0E3;">{{ st.cta }}</a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div class="steps-logo-marquee" style="margin-top:80px;padding:36px 0;overflow:hidden;">
+      <div style="display:flex;width:max-content;animation:photoMarquee 70s linear infinite;">
+        <div style="display:flex;align-items:center;gap:76px;padding-right:76px;">
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
+        </div>
+        <div style="display:flex;align-items:center;gap:76px;padding-right:76px;" aria-hidden="true">
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPOINTMENT CTA + MOVING PHOTO STRIP (2) -->
+  <section style="background:#FBF0E7;padding-top:70px;position:relative;overflow:hidden;">
+    <svg width="90" height="120" viewBox="0 0 100 130" style="position:absolute;top:10px;left:6%;opacity:0.5;pointer-events:none;">
+      <path d="M50 5c15 15 15 45 0 60-15-15-15-45 0-60z" fill="#C4623B" opacity="0.5"/>
+      <path d="M50 65c18-3 32 8 38 20-18 8-38 3-48-8z" fill="#E7A98A" opacity="0.5"/>
+    </svg>
+    <div style="max-width:1160px;margin:0 auto;padding:0 24px 60px;position:relative;">
+      <div style="background:#fff;border-radius:28px;padding:44px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+        <img src="./assets/badge-sage.webp" alt="" style="width:130px;height:130px;object-fit:contain;flex-shrink:0;"/>
+        <div style="flex:1;min-width:260px;">
+          <h2 style="font-size:clamp(24px,3vw,32px);color:#3F4A32;margin-bottom:14px;">Give your child a reason to smile</h2>
+          <p style="font-size:15px;line-height:1.7;color:#66675A;margin-bottom:20px;">Whether it's their first checkup or a bit of extra care, our team is here to make every visit calm, kind, and a little bit fun. Reach out and let's take great care of your child's smile together.</p>
+          <a href="#contact" style="display:inline-block;background:#C4623B;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;" style-hover="background:#A94F2E;">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section style="background:#EFF1E4;padding:110px 24px;position:relative;overflow:hidden;">
+    <img class="decor-mobile-hide" src="./assets/pattern-4.svg" alt="" style="position:absolute;top:8%;right:8%;width:110px;height:auto;opacity:0.85;pointer-events:none;z-index:0;"/>
+    <svg class="bg-rotor" width="320" height="320" viewBox="0 0 100 100" style="position:absolute;top:6%;left:-6%;opacity:0.5;pointer-events:none;z-index:0;">
+      <g fill="#fff">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <svg width="100%" height="70" viewBox="0 0 1440 70" preserveAspectRatio="none" style="position:absolute;top:0;left:0;pointer-events:none;">
+      <path d="M0,0 L1440,0 L1440,26 C1200,58 960,6 720,32 C480,58 240,10 0,36 Z" fill="#FBF7EF"/>
+    </svg>
+    <svg width="100%" height="70" viewBox="0 0 1440 70" preserveAspectRatio="none" style="position:absolute;bottom:-1px;left:0;pointer-events:none;">
+      <path d="M0,70 L0,34 C240,60 480,12 720,38 C960,64 1200,16 1440,44 L1440,70 Z" fill="#FBF7EF"/>
+    </svg>
+    <div style="max-width:900px;margin:0 auto;text-align:center;position:relative;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:44px;">
+        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
+        <h2 style="font-size:clamp(28px,3.6vw,40px);color:#3F4A32;">What families are saying</h2>
+      </div>
+      <div style="background:#F8E2D5;clip-path:{{ testimonialClip }};border-radius:{{ testimonialRadius }};padding:{{ testimonialPadding }};position:relative;animation:floatCard 8s ease-in-out infinite;">
+        <svg width="70" height="36" viewBox="0 0 46 24" style="position:absolute;top:26px;left:50%;transform:translateX(-50%);opacity:0.8;">
+          <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#7C8D64"/>
+          <path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/>
+          <path d="M22 20 Q30 4 44 8 Q38 22 22 20 Z" fill="#7C8D64"/>
+          <path d="M22 20 Q32 10 44 8" stroke="#4B5D3A" stroke-width="1" fill="none"/>
+        </svg>
+        <div style="max-width:560px;margin:0 auto;">
+          <p style="font-size:17px;line-height:1.7;color:#4A3A30;font-family:'Chelsea Market',cursive;font-weight:500;">"We visited the office for the first time this week. There's a welcoming message on the board for my kids. Dr. Patel was very patient and answered all the questions that we had — we didn't feel rushed at all. Every kid gets a goodie bag and a little toy at the end. Everybody was so incredibly friendly."</p>
+        </div>
+        <div style="margin-top:22px;font-weight:700;color:#A94F2E;">Shirley Nunez</div>
+        <a href="#contact" style="display:inline-block;margin-top:16px;font-weight:700;color:#A94F2E;">Read More Reviews &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" style="max-width:1160px;margin:0 auto;padding:100px 24px;position:relative;">
+    <img src="./assets/badge-terracotta.webp" alt="" style="position:absolute;top:10px;right:6%;width:100px;height:100px;transform:rotate(14deg);opacity:0.9;pointer-events:none;z-index:0;"/>
+    <svg class="bg-rotor" width="110" height="120" viewBox="0 0 200 220" style="position:absolute;top:0;left:8%;opacity:0.9;pointer-events:none;z-index:0;">
+      <path d="M60 195 C40 140 70 60 130 10 C145 70 115 155 65 200 Z" fill="#B7C4A0"/>
+      <path d="M60 200 C90 178 145 178 175 200 C145 222 90 222 60 200 Z" fill="#C7D2B8"/>
+    </svg>
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+      <svg class="bg-rotor" width="380" height="380" viewBox="0 0 100 100" style="position:absolute;top:10%;right:-8%;opacity:0.55;pointer-events:none;z-index:0;">
+        <g fill="#EAF0DE">
+          <ellipse cx="35" cy="58" rx="18" ry="14"/>
+          <ellipse cx="55" cy="48" rx="24" ry="19"/>
+          <ellipse cx="72" cy="58" rx="16" ry="13"/>
+          <rect x="24" y="55" width="56" height="18" rx="9"/>
+        </g>
+      </svg>
+      <svg width="90" height="140" viewBox="0 0 46 70" style="position:absolute;top:20px;left:-10px;opacity:0.5;transform:rotate(-15deg);">
+        <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/><path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/>
+        <path d="M6 50 Q14 32 28 36 Q22 50 6 50 Z" fill="#C9D4B6"/><path d="M6 50 Q16 38 28 36" stroke="#8FA06E" stroke-width="1" fill="none"/>
+      </svg>
+      <svg width="80" height="120" viewBox="0 0 46 70" style="position:absolute;bottom:40px;right:-14px;opacity:0.45;transform:rotate(160deg);">
+        <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/><path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/>
+        <path d="M6 50 Q14 32 28 36 Q22 50 6 50 Z" fill="#C9D4B6"/><path d="M6 50 Q16 38 28 36" stroke="#8FA06E" stroke-width="1" fill="none"/>
+      </svg>
+      <svg width="50" height="50" viewBox="0 0 46 24" style="position:absolute;top:46%;left:48%;opacity:0.3;transform:rotate(40deg);">
+        <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/><path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/>
+      </svg>
+    </div>
+    <div style="text-align:center;max-width:640px;margin:0 auto 60px;position:relative;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
+        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
+        <h2 style="font-size:clamp(32px,4.2vw,46px);color:#3F4A32;">Care for every stage of growth</h2>
+      </div>
+    </div>
+    <div>
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="4">
+        <div style="position:sticky;top:{{ s.stackTop }}px;z-index:{{ s.zIndex }};padding-bottom:50px;">
+          <div style="background:{{ s.cardBg }};border:1px solid rgba(60,60,40,0.08);border-radius:28px;padding:36px;display:grid;grid-template-columns:{{ s.imgOrder }};gap:44px;align-items:center;">
+            <image-slot id="svc-{{ $index }}" class="tilt-3d" shape="rect" mask="{{ s.blobMask }}" fit="cover" placeholder="{{ s.title }} photo" src="{{ s.photo }}" style="width:100%;aspect-ratio:4/3;order:{{ s.order }};"></image-slot>
+            <div style="order:{{ s.textOrder }};">
+              <h3 style="font-size:23px;color:#3F4A32;margin-bottom:12px;">{{ s.title }}</h3>
+              <p style="font-size:15.5px;line-height:1.7;color:#66675A;margin-bottom:16px;">{{ s.body }}</p>
+              <a href="#contact" style="font-weight:700;color:#C4623B;font-size:14.5px;">Learn More &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section style="background:#4B5D3A;padding:100px 24px;text-align:center;position:relative;overflow:hidden;">
+    <img class="decor-mobile-hide" src="./assets/leaf-single-sticker.svg" alt="" style="position:absolute;bottom:-10px;right:8%;width:100px;height:auto;transform:rotate(-20deg);opacity:0.85;pointer-events:none;z-index:0;"/>
+    <svg width="100%" height="70" viewBox="0 0 1440 70" preserveAspectRatio="none" style="position:absolute;top:0;left:0;pointer-events:none;">
+      <path d="M0,0 L1440,0 L1440,26 C1200,64 960,6 720,34 C480,62 240,8 0,40 Z" fill="#FBF7EF"/>
+    </svg>
+    <div style="position:absolute;top:-90px;left:50%;transform:translateX(-50%);width:340px;height:280px;background:#C4623B;border-radius:0 0 170px 170px;opacity:0.9;"></div>
+    <svg class="bg-rotor" width="140" height="140" viewBox="0 0 100 100" style="position:absolute;top:20px;left:6%;opacity:0.5;pointer-events:none;">
+      <g fill="#fff">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <svg class="bg-rotor" width="110" height="110" viewBox="0 0 100 100" style="position:absolute;bottom:24px;right:10%;opacity:0.4;pointer-events:none;">
+      <g fill="#fff">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <svg width="80" height="140" viewBox="0 0 80 140" style="position:absolute;bottom:0;left:3%;opacity:0.18;pointer-events:none;">
+      <rect x="36" y="90" width="8" height="50" fill="#fff"/>
+      <circle cx="40" cy="80" r="28" fill="#fff"/>
+      <circle cx="20" cy="60" r="18" fill="#fff"/>
+      <circle cx="60" cy="60" r="18" fill="#fff"/>
+    </svg>
+    <svg width="60" height="105" viewBox="0 0 80 140" style="position:absolute;bottom:0;right:4%;opacity:0.14;pointer-events:none;">
+      <rect x="36" y="90" width="8" height="50" fill="#fff"/>
+      <circle cx="40" cy="80" r="28" fill="#fff"/>
+      <circle cx="20" cy="60" r="18" fill="#fff"/>
+      <circle cx="60" cy="60" r="18" fill="#fff"/>
+    </svg>
+    <h2 style="color:#fff;font-size:clamp(26px,3.4vw,38px);max-width:640px;margin:0 auto 18px;position:relative;z-index:1;">Let's make their smile shine!</h2>
+    <p style="color:#DCE3CC;max-width:560px;margin:0 auto 30px;font-size:16px;line-height:1.6;">Give your child a strong start to lifelong oral health. Book their first visit today and let's create a positive dental experience they'll feel good about.</p>
+    <a href="#contact" style="background:#C4623B;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;" style-hover="background:#A94F2E;">Book Their Visit</a>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="max-width:820px;margin:0 auto;padding:100px 24px;position:relative;overflow:hidden;">
+    <img src="./assets/badge-sage.webp" alt="" style="position:absolute;top:10px;right:4%;width:80px;height:80px;transform:rotate(-10deg);opacity:0.9;pointer-events:none;z-index:0;"/>
+    <svg class="bg-rotor" width="100" height="110" viewBox="0 0 200 220" style="position:absolute;top:0;left:6%;opacity:0.9;pointer-events:none;z-index:0;">
+      <path d="M60 195 C40 140 70 60 130 10 C145 70 115 155 65 200 Z" fill="#B7C4A0"/>
+      <path d="M60 200 C90 178 145 178 175 200 C145 222 90 222 60 200 Z" fill="#C7D2B8"/>
+    </svg>
+    <svg class="bg-rotor" width="300" height="300" viewBox="0 0 100 100" style="position:absolute;top:4%;right:-8%;opacity:0.55;pointer-events:none;z-index:0;">
+      <g fill="#EAF0DE">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <div style="text-align:center;max-width:560px;margin:0 auto 50px;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
+        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
+        <h2 style="font-size:clamp(20px,5.2vw,42px);color:#3F4A32;white-space:nowrap;">Questions parents ask us</h2>
+      </div>
+      <p style="font-size:15.5px;line-height:1.7;color:#66675A;margin-top:14px;">A few things families often want to know before their first visit.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <sc-for list="{{ faqs }}" as="f">
+        <div style="background:#fff;border:1px solid #EEE7D8;border-radius:18px;overflow:hidden;">
+          <div onClick="{{ f.toggle }}" style="padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;">
+            <h3 style="font-size:16.5px;color:#3F4A32;">{{ f.q }}</h3>
+            <span style="color:#C4623B;font-size:20px;flex-shrink:0;">{{ f.icon }}</span>
+          </div>
+          <sc-if value="{{ f.open }}">
+            <p style="padding:0 24px 22px;font-size:15px;line-height:1.7;color:#66675A;margin:0;">{{ f.a }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="background:#FBF0E7;padding:110px 24px;position:relative;overflow:hidden;">
+    <img class="decor-mobile-hide" src="./assets/pattern-1.svg" alt="" style="position:absolute;top:6%;right:5%;width:100px;height:auto;opacity:0.7;pointer-events:none;z-index:0;"/>
+    <svg class="bg-rotor" width="280" height="280" viewBox="0 0 100 100" style="position:absolute;top:-4%;left:-5%;opacity:0.5;pointer-events:none;z-index:0;">
+      <g fill="#fff">
+        <ellipse cx="35" cy="58" rx="18" ry="14"/>
+        <ellipse cx="55" cy="48" rx="24" ry="19"/>
+        <ellipse cx="72" cy="58" rx="16" ry="13"/>
+        <rect x="24" y="55" width="56" height="18" rx="9"/>
+      </g>
+    </svg>
+    <svg width="340" height="360" viewBox="0 0 340 340" style="position:absolute;bottom:0;right:0;opacity:0.5;pointer-events:none;z-index:0;">
+      <path d="M 0 300 A 40 40 0 0 1 40 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+      <path d="M 0 265 A 75 75 0 0 1 75 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+      <path d="M 0 230 A 110 110 0 0 1 110 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+      <path d="M 0 195 A 145 145 0 0 1 145 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+      <path d="M 0 160 A 180 180 0 0 1 180 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+      <path d="M 0 125 A 215 215 0 0 1 215 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+      <path d="M 0 90 A 250 250 0 0 1 250 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+      <path d="M 0 55 A 285 285 0 0 1 285 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+      <path d="M 0 20 A 320 320 0 0 1 320 340" stroke="#D9BFA0" stroke-width="1.5" fill="none"/>
+    </svg>
+    <svg width="100%" height="70" viewBox="0 0 1440 70" preserveAspectRatio="none" style="position:absolute;top:0;left:0;pointer-events:none;">
+      <path d="M0,0 L1440,0 L1440,26 C1200,58 960,6 720,32 C480,58 240,10 0,36 Z" fill="#FBF7EF"/>
+    </svg>
+    <div style="max-width:1160px;margin:0 auto;position:relative;display:grid;grid-template-columns:{{ contactCols }};gap:60px;">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
+        <h2 style="font-size:clamp(30px,4vw,42px);color:#3F4A32;">Request an appointment</h2>
+      </div>
+      <p style="font-family:'Chelsea Market',cursive;color:#C4623B;font-size:15px;margin-bottom:24px;">Parents, take a moment.</p>
+      <form style="display:flex;flex-direction:column;gap:14px;" onSubmit="{{ handleSubmit }}">
+        <input placeholder="Name" style="padding:14px 16px;border-radius:12px;border:1px solid #DDD6C2;font-family:'Chelsea Market',cursive;font-size:15px;"/>
+        <input placeholder="Phone" style="padding:14px 16px;border-radius:12px;border:1px solid #DDD6C2;font-family:'Chelsea Market',cursive;font-size:15px;"/>
+        <input placeholder="Email" style="padding:14px 16px;border-radius:12px;border:1px solid #DDD6C2;font-family:'Chelsea Market',cursive;font-size:15px;"/>
+        <textarea placeholder="Message" rows="4" style="padding:14px 16px;border-radius:12px;border:1px solid #DDD6C2;font-family:'Chelsea Market',cursive;font-size:15px;resize:vertical;"></textarea>
+        <button type="submit" style="background:#C4623B;color:#fff;padding:14px 0;border-radius:100px;font-weight:700;font-size:15px;border:none;cursor:pointer;">Request Appointment</button>
+        <p style="font-size:12px;color:#8C8C7E;margin:0;">Requested time is not final until you receive confirmation from our office. Please do not submit any Protected Health Information (PHI).</p>
+      </form>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;">
+      <div style="border-radius:24px;overflow:hidden;height:230px;">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2917.2771699011523!2d-77.6387879!3d37.413947400000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b17354dce92f1b%3A0x1a5ce08fef0e948d!2sLittle%20Buds%20Pediatric%20Dentistry!5e1!3m2!1sen!2sin!4v1789112672987!5m2!1sen!2sin" style="width:100%;height:100%;border:0;" loading="lazy"></iframe>
+      </div>
+      <div style="background:#fff;border:1px solid #EEE7D8;border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:14px;">
+        <div><strong style="color:#3F4A32;">Address</strong><br/><a href="https://maps.app.goo.gl/oQsG7p3GRJkrQp8k8" style="color:#44443A;">5065 Craig Rath Blvd, Midlothian, VA 23112</a></div>
+        <div><strong style="color:#3F4A32;">Phone</strong><br/><a href="tel:+18046010469" style="color:#44443A;">(804) 601-0469</a></div>
+        <div><strong style="color:#3F4A32;">Email</strong><br/><a href="mailto:info@littlebudsdental.com" style="color:#44443A;">info@littlebudsdental.com</a></div>
+        <div>
+          <strong style="color:#3F4A32;">Hours</strong>
+          <div style="display:grid;grid-template-columns:auto auto;gap:4px 20px;margin-top:6px;font-size:14.5px;">
+            <span>Mon</span><span>8:30am – 5pm</span>
+            <span>Tue</span><span>By appointment only</span>
+            <span>Wed</span><span>Closed</span>
+            <span>Thu</span><span>8:30am – 5pm</span>
+            <span>Fri</span><span>8:30am – 1:30pm</span>
+            <span>Sat</span><span>By appointment only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#4B5D3A;color:#DCE3CC;padding:100px 24px 44px;position:relative;overflow:hidden;">
+    <img class="decor-mobile-hide" src="./assets/pattern-6.svg" alt="" style="position:absolute;top:10%;right:6%;width:90px;height:auto;opacity:0.6;pointer-events:none;z-index:0;"/>
+    <svg width="100%" height="60" viewBox="0 0 1440 60" preserveAspectRatio="none" style="position:absolute;top:0;left:0;pointer-events:none;">
+      <path d="M0,0 L1440,0 L1440,20 C1200,50 960,4 720,28 C480,52 240,6 0,32 Z" fill="#FBF0E7"/>
+    </svg>
+    <div style="max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;position:relative;">
+      <div style="max-width:280px;">
+        <div style="background:#fff;border-radius:14px;padding:6px 12px;display:inline-block;margin-bottom:14px;">
+          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:120px;display:block;"/>
+        </div>
+        <p style="font-size:14px;line-height:1.6;color:#B9C4A6;">A calm, kind dental home for growing smiles in Midlothian &amp; Chesterfield County, VA.</p>
+      </div>
+      <div style="display:flex;gap:60px;flex-wrap:wrap;">
+        <div>
+          <h4 style="color:#fff;font-size:15px;margin-bottom:14px;">Explore</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+            <a href="#meet" style="color:#DCE3CC;">Meet Us</a>
+            <a href="#first-visit" style="color:#DCE3CC;">First Visit</a>
+            <a href="#services" style="color:#DCE3CC;">Services</a>
+            <a href="#contact" style="color:#DCE3CC;">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="color:#fff;font-size:15px;margin-bottom:14px;">Contact</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+            <a href="tel:+18046010469" style="color:#DCE3CC;">(804) 601-0469</a>
+            <a href="mailto:info@littlebudsdental.com" style="color:#DCE3CC;">info@littlebudsdental.com</a>
+            <a href="https://www.instagram.com" style="color:#DCE3CC;">Instagram</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1160px;margin:40px auto 0;border-top:1px solid #6B7C5A;padding-top:20px;font-size:13px;color:#9BA989;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;">
+      <span>&copy; 2026 Little Buds Pediatric Dentistry</span>
+      <div style="display:flex;gap:16px;">
+        <a href="#" style="color:#9BA989;">Privacy Policy</a>
+        <a href="#" style="color:#9BA989;">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { menuOpen: false, videoFailed: false, scrolled: false, servicesOpen: false, isMobile: false, openFaq: 0 };
+
+  toggleMenu = () => this.setState(s => ({ menuOpen: !s.menuOpen }));
+  toggleFaq = (i) => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i }));
+  handleSubmit = (e) => { e.preventDefault(); };
+  handleVideoError = () => this.setState({ videoFailed: true });
+  openServices = () => this.setState({ servicesOpen: true });
+  closeServices = () => this.setState({ servicesOpen: false });
+  openPatientInfo = () => this.setState({ patientInfoOpen: true });
+  closePatientInfo = () => this.setState({ patientInfoOpen: false });
+  handleScroll = () => {
+    const scrolled = window.scrollY > 40;
+    if (scrolled !== this.state.scrolled) this.setState({ scrolled });
+  };
+  handleResize = () => {
+    const isMobile = window.innerWidth < 860;
+    if (isMobile !== this.state.isMobile) this.setState({ isMobile });
+  };
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+
+    const stickyCta = document.querySelector('.mobile-sticky-cta');
+    if (stickyCta) {
+      let scrollStopTimer;
+      window.addEventListener('scroll', () => {
+        stickyCta.classList.add('cta-hidden');
+        clearTimeout(scrollStopTimer);
+        scrollStopTimer = setTimeout(() => {
+          stickyCta.classList.remove('cta-hidden');
+        }, 250);
+      }, { passive: true });
+    }
+    const heroVideoEl = document.getElementById('hero-video-el');
+    if (heroVideoEl) {
+      heroVideoEl.muted = true;
+      heroVideoEl.loop = true;
+      heroVideoEl.addEventListener('ended', () => { heroVideoEl.currentTime = 0; heroVideoEl.play().catch(() => {}); });
+      heroVideoEl.play().catch(() => {});
+    }
+    setTimeout(() => {
+      const el = document.getElementById('hero-video-el');
+      if (!el || el.readyState < 2) this.setState({ videoFailed: true });
+    }, 8000);
+
+    const whiteEl = document.getElementById('hero-typed-white');
+    const orangeEl = document.getElementById('hero-typed-orange');
+    if (whiteEl && orangeEl) {
+      const whiteText = 'smiles ';
+      const orangeText = 'grow';
+      let i = 0;
+      const typeSpeed = 80;
+      const typeNext = () => {
+        const full = whiteText + orangeText;
+        if (i <= full.length) {
+          const typed = full.slice(0, i);
+          whiteEl.textContent = typed.slice(0, whiteText.length);
+          orangeEl.textContent = typed.slice(whiteText.length);
+          i++;
+          setTimeout(typeNext, typeSpeed);
+        }
+      };
+      setTimeout(typeNext, 500);
+    }
+
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      const sections = document.querySelectorAll('x-dc > div > section, x-dc > div > footer');
+      sections.forEach((sec, i) => {
+        if (i === 0) return; // hero already has its own entrance animation
+        gsap.from(sec, {
+          opacity: 0,
+          y: 36,
+          duration: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: sec, start: 'top 85%', end: 'bottom top', toggleActions: 'play reverse play reverse' }
+        });
+
+        const items = [...sec.querySelectorAll('h2, h3, p, img, image-slot, a, form, iframe')].filter(el => !el.closest('[style*="photoMarquee"]'));
+        if (items.length) {
+          gsap.from(items, {
+            opacity: 0,
+            y: 22,
+            duration: 0.6,
+            stagger: 0.06,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: sec, start: 'top 80%', end: 'bottom top', toggleActions: 'play reverse play reverse' }
+          });
+        }
+      });
+
+      const splitReveal = (el, stagger) => {
+        if (el.dataset.split) return;
+        el.dataset.split = '1';
+        const words = el.textContent.split(' ');
+        el.innerHTML = words.map(w =>
+          `<span style="display:inline-block;overflow:hidden;vertical-align:top;"><span style="display:inline-block;" class="word-inner">${w}&nbsp;</span></span>`
+        ).join('');
+        gsap.from(el.querySelectorAll('.word-inner'), {
+          yPercent: 110,
+          duration: 0.6,
+          stagger,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
+        });
+      };
+      document.querySelectorAll('h2').forEach((h) => splitReveal(h, 0.05));
+      document.querySelectorAll('#services p, #principles p, #first-visit p, #faq p, #meet p').forEach((p) => splitReveal(p, 0.015));
+
+      document.querySelectorAll('image-slot, #gallery img, .tilt-3d').forEach((card) => {
+        gsap.from(card, {
+          opacity: 0,
+          scale: 0.88,
+          duration: 0.7,
+          ease: 'back.out(1.6)',
+          scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play reverse play reverse' }
+        });
+      });
+
+      document.querySelectorAll('.bg-rotor').forEach((el, i) => {
+        const section = el.closest('section');
+        el.style.transformOrigin = '50% 50%';
+        gsap.to(el, {
+          x: i % 2 === 0 ? 160 : -160,
+          y: -120,
+          scale: i % 2 === 0 ? 1.25 : 0.8,
+          rotation: i % 2 === 0 ? 12 : -12,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 0.6 }
+        });
+      });
+    }
+
+    document.querySelectorAll('.tilt-3d').forEach((el) => {
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = `perspective(800px) rotateX(${(-py * 12).toFixed(2)}deg) rotateY(${(px * 12).toFixed(2)}deg) scale3d(1.03,1.03,1.03)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  renderVals() {
+    return {
+      menuOpen: this.state.menuOpen,
+      toggleMenu: this.toggleMenu,
+      handleSubmit: this.handleSubmit,
+      handleVideoError: this.handleVideoError,
+      videoDisplay: this.state.videoFailed ? 'none' : 'block',
+      headerBg: this.state.scrolled ? '#FBF7EF' : 'transparent',
+      headerBorder: this.state.scrolled ? '#EAE3D2' : 'transparent',
+      headerShadow: 'none',
+      headerBlur: 'none',
+      navTextColor: this.state.scrolled ? '#3F4A32' : '#fff',
+      logoFilter: this.state.scrolled ? 'none' : 'brightness(0) invert(1)',
+      logoHeight: this.state.isMobile ? '60px' : '100px',
+      headerWidth: this.state.isMobile ? '100%' : 'auto',
+      servicesOpen: this.state.servicesOpen,
+      openServices: this.openServices,
+      closeServices: this.closeServices,
+      patientInfoOpen: this.state.patientInfoOpen,
+      openPatientInfo: this.openPatientInfo,
+      closePatientInfo: this.closePatientInfo,
+      navDisplay: this.state.isMobile ? 'none' : 'flex',
+      heroPadding: this.state.isMobile ? '120px 20px 40px' : '140px 24px 40px',
+      heroLineDisplay: this.state.isMobile ? 'none' : 'inline-block',
+      heroHeadingWrap: this.state.isMobile ? 'normal' : 'nowrap',
+      logosGap: this.state.isMobile ? '16px' : '160px',
+      logosHeight: this.state.isMobile ? '60px' : '150px',
+      meetCols: this.state.isMobile ? '1fr' : 'minmax(280px,0.85fr) minmax(300px,1.15fr)',
+      galleryCols: this.state.isMobile ? 'none' : 'repeat(4,1fr)',
+      galleryRowHeight: this.state.isMobile ? 'auto' : '220px',
+      galleryDisplay: this.state.isMobile ? 'flex' : 'grid',
+      galleryOverflowX: this.state.isMobile ? 'auto' : 'visible',
+      galleryScrollSnap: this.state.isMobile ? 'x mandatory' : 'none',
+      galleryScrollPad: this.state.isMobile ? '10px' : '0',
+      galleryTallHeight: this.state.isMobile ? '320px' : '460px',
+      galleryShortHeight: this.state.isMobile ? '220px' : '220px',
+      principlesCols: this.state.isMobile ? '1fr' : 'minmax(260px,0.8fr) minmax(340px,1.2fr)',
+      principlesInnerCols: this.state.isMobile ? '1fr' : 'repeat(2,1fr)',
+      contactCols: this.state.isMobile ? '1fr' : 'minmax(300px,1fr) minmax(300px,1fr)',
+      testimonialClip: this.state.isMobile ? 'none' : 'polygon(0% 26%, 4.0% 19.5%, 6.9% 17.7%, 9.8% 15.5%, 12.6% 12.9%, 15.5% 10.3%, 18.4% 8.1%, 21.2% 6.6%, 24.1% 5.7%, 27.0% 5.2%, 29.9% 4.8%, 32.8% 4.2%, 35.6% 3.6%, 38.5% 3.0%, 41.4% 2.5%, 44.2% 2.2%, 47.1% 2.1%, 50.0% 2.2%, 52.9% 2.4%, 55.8% 2.8%, 58.6% 3.2%, 61.5% 3.7%, 64.4% 4.1%, 67.2% 4.5%, 70.1% 5.1%, 73.0% 5.9%, 75.9% 6.9%, 78.8% 8.0%, 81.6% 9.0%, 84.5% 10.0%, 87.4% 11.2%, 90.2% 12.7%, 93.1% 14.7%, 96.0% 16.8%, 100% 26%, 100% 74%, 96.0% 91.0%, 93.1% 91.5%, 90.2% 92.0%, 87.4% 92.7%, 84.5% 93.4%, 81.6% 94.1%, 78.8% 94.8%, 75.9% 95.4%, 73.0% 95.9%, 70.1% 96.3%, 67.2% 96.5%, 64.4% 96.7%, 61.5% 96.8%, 58.6% 96.8%, 55.8% 96.7%, 52.9% 96.7%, 50.0% 96.6%, 47.1% 96.6%, 44.2% 96.5%, 41.4% 96.4%, 38.5% 96.3%, 35.6% 96.2%, 32.8% 96.0%, 29.9% 95.7%, 27.0% 95.2%, 24.1% 94.7%, 21.2% 94.1%, 18.4% 93.4%, 15.5% 92.8%, 12.6% 92.1%, 9.8% 91.6%, 6.9% 91.1%, 4.0% 90.8%, 0% 74%)',
+      testimonialRadius: this.state.isMobile ? '28px' : '0',
+      testimonialPadding: this.state.isMobile ? '50px 24px 40px' : '90px 60px 80px',
+      stepsContainerStyle: this.state.isMobile
+        ? 'max-width:520px;margin:0 auto;'
+        : 'display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:56px 32px;',
+      burgerDisplay: this.state.isMobile ? 'flex' : 'none',
+      heroStats: [
+        { n: '2-3 yrs', label: 'Extra specialized training' },
+        { n: '100%', label: 'Kid-focused care' },
+        { n: 'Sat', label: 'Appointments available' }
+      ],
+      certs: [
+        'American Board of Pediatric Dentistry — Diplomate',
+        'American Academy of Pediatric Dentistry — Member',
+        'Gorgas Odontological Honor Society',
+        'Gamma Phi Delta Honor Society'
+      ],
+      faqs: [
+        { q: 'When should my child first see a dentist?', a: 'Most pediatric dentists recommend a first visit by your child\'s first birthday, or within six months of their first tooth coming in — whichever comes first. Early visits help catch concerns early and get kids comfortable with dental care from the start.' },
+        { q: 'What should we bring to the first appointment?', a: 'Bring any dental records or x-rays from a previous dentist, your insurance card, and a list of any medications your child takes. Completing new patient forms ahead of time also helps the visit go smoothly.' },
+        { q: 'Do you accept dental insurance?', a: 'We work with a range of dental insurance plans. Give our office a call with your plan details and we\'ll help confirm your coverage before your visit.' },
+        { q: 'What if my child is nervous about the dentist?', a: 'That\'s completely normal, and it\'s exactly what we\'re here for. Our team is trained in helping anxious kids feel safe and comfortable, and we go at a pace that works for your child.' },
+        { q: 'Until what age do you see patients?', a: 'We typically see patients through their teenage years, and can help with a smooth transition to a general dentist when the time comes.' }
+      ].map((f, i) => ({ ...f, open: this.state.openFaq === i, toggle: () => this.toggleFaq(i), icon: this.state.openFaq === i ? '−' : '+' })),
+      principles: [
+        { title: 'You Come First', body: 'Saturday appointments, easy communication, and a team that actually listens. Your family\'s schedule and your child\'s comfort always come first here — no exceptions.', iconImg: './assets/badge-sage.webp' },
+        { title: 'Gentle, Modern Care', body: 'Little mouths deserve the good stuff — safe, up-to-date tools and techniques that keep things gentle. We choose minimally-invasive options whenever we can, so treatment stays as easy as possible.', iconImg: './assets/badge-terracotta.webp' },
+        { title: 'Real Expertise, Real Heart', body: 'Our board-certified pediatric dentist and warm, patient team meet every child right where they are — including kids with unique needs who need a little extra care.', iconImg: './assets/badge-yellow.webp' },
+        { title: 'Made for Kids', body: 'Soft colors, playful little touches, a cozy sensory nook, and ceiling TVs — our space is built to help kids relax, have fun, and feel proud of every step forward.', iconImg: './assets/badge-sage.webp' }
+      ],
+      steps: [
+        { n: '1', title: 'Educate', body: 'Check out our FAQ section, designed to answer frequently asked questions about our services, treatment options, and practice policies.', cta: 'Learn More', tilt: '-4deg', cardBg: '#C7D2AC', badgeBg: '#3F4A32', iconPath: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z' },
+        { n: '2', title: 'Schedule', body: "Scheduling your child's first dental appointment is quick and straightforward with our online booking system.", cta: 'Book Now', tilt: '2deg', cardBg: '#F1E9DA', badgeBg: '#3F4A32', iconPath: 'M3 10h18M8 2v4M16 2v4M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z' },
+        { n: '3', title: 'Prepare', body: "Complete new patient forms from home so you can focus on your child's comfort and set the stage for a positive first visit.", cta: 'Get Started', tilt: '-2deg', cardBg: '#F5E5B8', badgeBg: '#3F4A32', iconPath: 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 14l2 2 4-4' }
+      ].map((s, i) => ({
+        ...s,
+        mobileTilt: this.state.isMobile ? '0deg' : s.tilt,
+        wrapperStyle: this.state.isMobile
+          ? `position:sticky;top:${100 + i * 30}px;z-index:${i + 1};padding-bottom:70px;`
+          : ''
+      })),
+      services: (() => {
+        const list = [
+          { title: 'Preventive Dentistry', body: 'Regular checkups, cleanings, and fluoride care that help catch little concerns before they become big ones. We take time to explain everything in kid-friendly language, so nothing feels scary or rushed. Each visit includes a gentle exam, a fun cleaning, and personalized tips for brushing and flossing at home. Our goal is simple: help your child build strong habits early, so healthy smiles come naturally as they grow.' },
+          { title: 'Infant Dentistry', body: "Gentle, unhurried care for your little one's very first smile. We check in on how their teeth and jaw are developing, and we're happy to answer questions about feeding, teething, pacifiers, or thumb-sucking — whatever's on your mind. Starting early helps your baby get comfortable with the dentist chair long before it's a big deal. It also gives us a head start on guiding healthy habits from day one." },
+          { title: 'Restorative Dentistry', body: "When a tooth needs a little extra help, we're here with treatments made just for kids — gentle, quick, and designed to feel as easy as possible. Whether it's a cavity, a chip, or something that needs strengthening, we walk you and your child through every step beforehand. Our priority is restoring health and function while keeping the experience calm and positive, so future visits feel just as comfortable." },
+          { title: 'Emergency Dentistry', body: "Bumps, falls, and sudden toothaches don't wait for a convenient time — and neither do we. Our team is ready to see your child quickly for urgent concerns, with the same warmth and patience as any regular visit. We'll get them out of pain, explain what happened in simple terms, and make a plan to keep their smile healthy going forward. You're never alone when a dental emergency comes up." }
+        ];
+        const photos = ['./assets/preventive-dentistry.webp', './assets/infant-dentistry.webp', './assets/restorative-dentistry.webp', './assets/emergency-dentistry.webp'];
+        const cardBgs = ['#EFF1E4', '#FBF0E7', '#F5E9C8', '#F6E3D5'];
+        return list.map((s, i) => ({
+          ...s,
+          imgOrder: this.state.isMobile ? '1fr' : '1.3fr 1fr',
+          order: i % 2 === 0 ? 1 : 2,
+          textOrder: i % 2 === 0 ? 2 : 1,
+          radius: i % 2 === 0
+            ? 'polygon(88.3% 50.0%, 89.4% 64.3%, 78.8% 74.1%, 66.8% 79.1%, 55.8% 83.0%, 44.2% 82.8%, 32.3% 80.6%, 18.8% 76.2%, 11.5% 64.0%, 16.3% 50.0%, 21.8% 39.7%, 23.6% 27.9%, 30.8% 16.8%, 43.3% 12.1%, 56.7% 11.9%, 68.3% 18.2%, 74.0% 29.9%, 79.2% 39.4%)'
+            : 'polygon(89.6% 50.0%, 82.4% 61.8%, 75.2% 71.2%, 66.4% 78.3%, 56.0% 83.9%, 43.1% 89.3%, 28.9% 86.5%, 22.6% 73.0%, 21.9% 60.2%, 17.6% 50.0%, 14.8% 37.2%, 20.1% 24.9%, 30.4% 16.0%, 43.5% 13.0%, 55.6% 18.4%, 64.9% 24.1%, 77.7% 26.7%, 89.5% 35.6%)',
+          photo: photos[i],
+          cardBg: cardBgs[i],
+          blobMask: i % 2 === 0
+            ? 'polygon(99.58% 50.00%, 99.29% 56.49%, 97.51% 62.73%, 94.39% 68.39%, 90.24% 73.23%, 85.37% 77.14%, 80.13% 80.13%, 74.80% 82.32%, 69.55% 83.86%, 64.48% 84.95%, 59.57% 85.73%, 54.78% 86.29%, 50.00% 86.63%, 45.17% 86.68%, 40.26% 86.35%, 35.29% 85.50%, 30.35% 84.04%, 25.52% 81.90%, 20.95% 79.05%, 16.75% 75.51%, 13.02% 71.35%, 9.85% 66.63%, 7.31% 61.44%, 5.47% 55.86%, 4.40% 50.00%, 4.18% 43.97%, 4.91% 37.92%, 6.64% 32.04%, 9.39% 26.55%, 13.10% 21.69%, 17.66% 17.66%, 22.87% 14.64%, 28.46% 12.70%, 34.18% 11.81%, 39.78% 11.85%, 45.08% 12.60%, 50.00% 13.81%, 54.58% 15.23%, 58.93% 16.67%, 63.24% 18.04%, 67.67% 19.40%, 72.34% 20.88%, 77.28% 22.72%, 82.36% 25.17%, 87.35% 28.43%, 91.92% 32.63%, 95.70% 37.75%, 98.34% 43.64%)'
+            : 'polygon(86.06% 50.00%, 85.76% 54.71%, 85.26% 59.45%, 84.44% 64.26%, 83.14% 69.14%, 81.24% 73.97%, 78.63% 78.63%, 75.29% 82.96%, 71.25% 86.81%, 66.58% 90.03%, 61.40% 92.55%, 55.83% 94.28%, 50.00% 95.20%, 44.04% 95.27%, 38.09% 94.47%, 32.28% 92.78%, 26.80% 90.19%, 21.81% 86.73%, 17.52% 82.48%, 14.10% 77.54%, 11.68% 72.12%, 10.32% 66.43%, 10.00% 60.72%, 10.58% 55.19%, 11.88% 50.00%, 13.65% 45.21%, 15.67% 40.80%, 17.75% 36.64%, 19.82% 32.58%, 21.90% 28.44%, 24.11% 24.11%, 26.67% 19.59%, 29.78% 14.98%, 33.65% 10.52%, 38.35% 6.53%, 43.86% 3.37%, 50.00% 1.38%, 56.48% 0.81%, 62.92% 1.78%, 68.95% 4.25%, 74.24% 8.02%, 78.55% 12.79%, 81.80% 18.20%, 84.01% 23.90%, 85.35% 29.59%, 86.02% 35.08%, 86.25% 40.29%, 86.23% 45.23%)',
+          stackTop: 96 + i * 14,
+          zIndex: i + 1
+        }));
+      })()
+    };
+  }
+}
+
+</script>
+</body>
+</html>
