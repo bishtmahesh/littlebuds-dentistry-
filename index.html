@@ -80,7 +80,7 @@
     .mobile-sticky-cta a.call-now { background:transparent; color:#4B5D3A; border:2px solid #4B5D3A; padding:12px 12px; }
     body { padding-bottom:74px; }
     .steps-logo-marquee { margin-top:20px !important; padding:16px 0 !important; }
-    .steps-logo-marquee img { height:48px !important; }
+    .steps-logo-marquee img { height:36px !important; }
     .steps-logo-marquee span:first-child { font-size:16px !important; }
     .steps-logo-marquee > div > div { gap:32px !important; padding-right:32px !important; }
   }
@@ -93,7 +93,7 @@
   @keyframes openingWobble { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-8px) rotate(2deg); } }
   @keyframes openingFadeOut { to { opacity:0; visibility:hidden; } }
   #opening-logo { position:fixed; inset:0; z-index:9999; background:#FBF7EF; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; animation:openingFadeOut 0.6s ease forwards; animation-delay:2.1s; }
-  #opening-logo img { height:220px; width:auto; animation:openingPop 0.9s cubic-bezier(.34,1.56,.64,1) both, openingWobble 1.6s ease-in-out 0.9s infinite; }
+  #opening-logo img { width:min(520px,80vw); height:auto; animation:openingPop 0.9s cubic-bezier(.34,1.56,.64,1) both, openingWobble 1.6s ease-in-out 0.9s infinite; }
   #opening-logo p { font-family:'Chelsea Market',cursive; font-size:20px; color:#4B5D3A; margin-top:18px; opacity:0; animation:fadeUp 0.7s ease-out both; animation-delay:0.7s; }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -129,7 +129,7 @@
     </clipPath>
   </defs>
 </svg>
-<div id="opening-logo"><img src="./assets/littlebuds-logo.webp" alt="Little Buds Pediatric Dentistry"/></div>
+<div id="opening-logo"><img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds Pediatric Dentistry"/></div>
 
 <div class="mobile-sticky-cta">
   <a href="#contact" class="book-now">Book Now</a>
@@ -139,14 +139,22 @@
 <div style="max-width:100%;background:#FBF7EF;">
 
   <!-- HEADER -->
-  <header style="position:fixed;top:0;left:0;right:0;z-index:50;">
-    <div style="position:absolute;inset:0;background:{{ headerBg }};border-bottom:1px solid {{ headerBorder }};box-shadow:{{ headerShadow }};backdrop-filter:{{ headerBlur }};transition:background 0.25s ease,border-color 0.25s ease,box-shadow 0.25s ease;"></div>
-    <div style="max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:flex-start;position:relative;">
+  <header style="position:fixed;top:{{ headerTop }};left:{{ headerSide }};right:{{ headerSide }};z-index:50;transition:top 0.3s ease,left 0.3s ease,right 0.3s ease;">
+    <div style="position:absolute;inset:0;background:{{ headerBg }};border:1px solid {{ headerBorder }};border-radius:{{ headerRadius }};box-shadow:{{ headerShadow }};backdrop-filter:{{ headerBlur }};transition:background 0.25s ease,border-color 0.25s ease,box-shadow 0.25s ease;"></div>
+    <div style="max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:flex-start;position:relative;">
     <div style="width:100%;min-width:0;padding:8px 32px 8px 0;display:flex;align-items:center;justify-content:space-between;gap:22px;position:relative;">
-      <img src="./assets/littlebuds-logo.webp" alt="Little Buds Pediatric Dentistry" style="height:{{ logoHeight }};width:auto;display:block;filter:{{ logoFilter }};transition:filter 0.25s ease,height 0.25s ease;flex-shrink:0;margin-left:24px;"/>
-      <div style="display:{{ navDisplay }};align-items:center;justify-content:flex-end;gap:48px;min-width:0;">
-        <nav style="display:flex;align-items:center;gap:48px;font-weight:600;color:{{ navTextColor }};font-size:14px;white-space:nowrap;">
-          <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Home</a>
+      <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds Pediatric Dentistry" style="height:{{ logoHeight }};width:auto;display:block;filter:{{ logoFilter }};transition:filter 0.25s ease;flex-shrink:0;margin-left:24px;"/>
+      <div style="display:{{ navDisplay }};align-items:center;justify-content:flex-end;gap:24px;min-width:0;">
+        <nav style="display:flex;align-items:center;gap:24px;font-weight:600;color:{{ navTextColor }};font-size:14px;white-space:nowrap;">
+          <div style="position:relative;" onMouseEnter="{{ openHome }}" onMouseLeave="{{ closeHome }}">
+            <span style="color:{{ navTextColor }};cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;">Home <span style="font-size:11px;">&#9662;</span></span>
+            <sc-if value="{{ homeOpen }}">
+              <div style="position:absolute;top:28px;left:0;background:#fff;border:1px solid #EEE7D8;border-radius:14px;padding:10px;min-width:170px;display:flex;flex-direction:column;gap:2px;">
+                <a href="./index.html" style="color:#3F4A32;padding:9px 12px;border-radius:8px;font-weight:700;background:#EEF0E3;">Version 1</a>
+                <a href="./v2.html" style="color:#3F4A32;padding:9px 12px;border-radius:8px;font-weight:500;" style-hover="background:#EEF0E3;">Version 2</a>
+              </div>
+            </sc-if>
+          </div>
           <a href="#meet" style="color:{{ navTextColor }};white-space:nowrap;">About Us</a>
           <div style="position:relative;" onMouseEnter="{{ openServices }}" onMouseLeave="{{ closeServices }}">
             <span style="color:{{ navTextColor }};cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;">Services <span style="font-size:11px;">&#9662;</span></span>
@@ -160,7 +168,7 @@
             </sc-if>
           </div>
         </nav>
-        <div style="display:flex;align-items:center;gap:48px;font-weight:600;color:{{ navTextColor }};font-size:14px;white-space:nowrap;">
+        <div style="display:flex;align-items:center;gap:24px;font-weight:600;color:{{ navTextColor }};font-size:14px;white-space:nowrap;">
           <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Membership Plans</a>
           <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Blog</a>
           <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Referrals</a>
@@ -172,8 +180,9 @@
     </div>
     </div>
     <sc-if value="{{ menuOpen }}">
-      <div style="display:flex;flex-direction:column;gap:16px;padding:18px 24px 24px;border-top:1px solid #EAE3D2;font-weight:600;color:#3F4A32;background:#FBF7EF;">
-        <a href="#" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Home</a>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:18px 24px 24px;border-top:1px solid #EAE3D2;font-weight:600;color:#3F4A32;background:#FBF7EF;border-radius:{{ menuRadius }};position:relative;">
+        <a href="./index.html" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Home: Version 1</a>
+        <a href="./v2.html" style="color:#3F4A32;">Home: Version 2</a>
         <a href="#meet" onClick="{{ toggleMenu }}" style="color:#3F4A32;">About Us</a>
         <a href="#services" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Services</a>
         <a href="#" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Membership Plans</a>
@@ -392,60 +401,60 @@
     <div class="steps-logo-marquee" style="margin-top:80px;padding:36px 0;overflow:hidden;">
       <div style="display:flex;width:max-content;animation:photoMarquee 70s linear infinite;">
         <div style="display:flex;align-items:center;gap:76px;padding-right:76px;">
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
         </div>
         <div style="display:flex;align-items:center;gap:76px;padding-right:76px;" aria-hidden="true">
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:88px;width:auto;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
         </div>
@@ -710,7 +719,7 @@
     <div style="max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;position:relative;">
       <div style="max-width:280px;">
         <div style="background:#fff;border-radius:14px;padding:6px 12px;display:inline-block;margin-bottom:14px;">
-          <img src="./assets/littlebuds-logo.webp" alt="Little Buds" style="height:120px;display:block;"/>
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:80px;width:auto;max-width:100%;display:block;"/>
         </div>
         <p style="font-size:14px;line-height:1.6;color:#B9C4A6;">A calm, kind dental home for growing smiles in Midlothian &amp; Chesterfield County, VA.</p>
       </div>
@@ -748,12 +757,14 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { menuOpen: false, videoFailed: false, scrolled: false, servicesOpen: false, isMobile: false, openFaq: 0 };
+  state = { menuOpen: false, videoFailed: false, scrolled: false, servicesOpen: false, homeOpen: false, isMobile: false, navCompact: false, openFaq: 0 };
 
   toggleMenu = () => this.setState(s => ({ menuOpen: !s.menuOpen }));
   toggleFaq = (i) => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i }));
   handleSubmit = (e) => { e.preventDefault(); };
   handleVideoError = () => this.setState({ videoFailed: true });
+  openHome = () => this.setState({ homeOpen: true });
+  closeHome = () => this.setState({ homeOpen: false });
   openServices = () => this.setState({ servicesOpen: true });
   closeServices = () => this.setState({ servicesOpen: false });
   openPatientInfo = () => this.setState({ patientInfoOpen: true });
@@ -764,7 +775,8 @@ class Component extends DCLogic {
   };
   handleResize = () => {
     const isMobile = window.innerWidth < 860;
-    if (isMobile !== this.state.isMobile) this.setState({ isMobile });
+    const navCompact = window.innerWidth < 1240;
+    if (isMobile !== this.state.isMobile || navCompact !== this.state.navCompact) this.setState({ isMobile, navCompact });
   };
 
   componentDidMount() {
@@ -910,19 +922,26 @@ class Component extends DCLogic {
       videoDisplay: this.state.videoFailed ? 'none' : 'block',
       headerBg: this.state.scrolled ? '#FBF7EF' : 'transparent',
       headerBorder: this.state.scrolled ? '#EAE3D2' : 'transparent',
-      headerShadow: 'none',
+      headerShadow: this.state.scrolled ? '0 10px 30px rgba(63,74,50,0.12)' : 'none',
+      headerTop: this.state.scrolled ? (this.state.isMobile ? '10px' : '14px') : '0',
+      headerSide: this.state.scrolled ? (this.state.isMobile ? '10px' : 'max(16px, calc((100vw - 1400px) / 2))') : '0',
+      headerRadius: this.state.scrolled ? (this.state.menuOpen ? '24px' : '100px') : '0',
+      menuRadius: this.state.scrolled ? '0 0 24px 24px' : '0',
       headerBlur: 'none',
       navTextColor: this.state.scrolled ? '#3F4A32' : '#fff',
       logoFilter: this.state.scrolled ? 'none' : 'brightness(0) invert(1)',
-      logoHeight: this.state.isMobile ? '60px' : '100px',
+      logoHeight: this.state.isMobile ? '40px' : '60px',
       headerWidth: this.state.isMobile ? '100%' : 'auto',
+      homeOpen: this.state.homeOpen,
+      openHome: this.openHome,
+      closeHome: this.closeHome,
       servicesOpen: this.state.servicesOpen,
       openServices: this.openServices,
       closeServices: this.closeServices,
       patientInfoOpen: this.state.patientInfoOpen,
       openPatientInfo: this.openPatientInfo,
       closePatientInfo: this.closePatientInfo,
-      navDisplay: this.state.isMobile ? 'none' : 'flex',
+      navDisplay: this.state.navCompact ? 'none' : 'flex',
       heroPadding: this.state.isMobile ? '120px 20px 40px' : '140px 24px 40px',
       heroLineDisplay: this.state.isMobile ? 'none' : 'inline-block',
       heroHeadingWrap: this.state.isMobile ? 'normal' : 'nowrap',
@@ -946,7 +965,7 @@ class Component extends DCLogic {
       stepsContainerStyle: this.state.isMobile
         ? 'max-width:520px;margin:0 auto;'
         : 'display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:56px 32px;',
-      burgerDisplay: this.state.isMobile ? 'flex' : 'none',
+      burgerDisplay: this.state.navCompact ? 'flex' : 'none',
       heroStats: [
         { n: '2-3 yrs', label: 'Extra specialized training' },
         { n: '100%', label: 'Kid-focused care' },
