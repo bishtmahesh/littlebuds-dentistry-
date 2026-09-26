@@ -10,6 +10,61 @@
 <script src="./support.js"></script>
 </head>
 <body style="overflow-x:hidden;">
+<!-- Opening animation (same as Version 2): icon appears, wording sweeps in, logo glides into the nav bar -->
+<style>
+  #intro { position: fixed; inset: 0; z-index: 10000; background: #FBF7EF; }
+  #intro .intro-logo { position: fixed; left: 0; top: 0; width: auto; transform-origin: 0 0; opacity: 0; will-change: transform, clip-path; clip-path: inset(0 67.5% 0 0); }
+  #intro .intro-logo.show-icon { opacity: 1; transition: opacity .6s ease; }
+  #intro .intro-logo.show-all { clip-path: inset(0 0 0 0); transition: clip-path .8s cubic-bezier(.65,0,.35,1); }
+  html.intro-on #lb-header img { opacity: 0; }
+  html.intro-on, html.intro-on body { overflow: hidden; }
+</style>
+<div id="intro" aria-hidden="true">
+  <img class="intro-logo" src="./assets/littlebuds-logo.webp?v=2" alt="" width="960" height="259">
+</div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var intro = document.getElementById('intro');
+  if (!intro) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { intro.parentNode.removeChild(intro); return; }
+  root.classList.add('intro-on');
+  var done = false;
+  var finish = function () { if (done) return; done = true; if (intro.parentNode) intro.parentNode.removeChild(intro); root.classList.remove('intro-on'); };
+  var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  intro.addEventListener('click', finish);
+  var run = async function () {
+    var big = intro.querySelector('.intro-logo');
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var h = Math.round(Math.min(Math.max(vw * 0.13, 70), 150));
+    var w = h * 960 / 259;
+    if (w > vw * 0.86) { w = vw * 0.86; h = w * 259 / 960; }
+    var x = (vw - w) / 2, y = (vh - h) / 2;
+    big.style.height = h + 'px';
+    big.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    big.getBoundingClientRect();
+    big.classList.add('show-icon');
+    await wait(600); if (done) return;
+    big.classList.add('show-all');
+    await wait(1000); if (done) return;
+    // the nav bar is drawn by the page script; wait briefly for its logo
+    var navLogo = null;
+    for (var i = 0; i < 40 && !navLogo; i++) { navLogo = document.querySelector('#lb-header img'); if (!navLogo) await wait(50); }
+    if (!navLogo || done) { finish(); return; }
+    var nr = navLogo.getBoundingClientRect();
+    var from = 'translate(' + x + 'px,' + y + 'px)';
+    var to = 'translate(' + nr.left + 'px,' + nr.top + 'px) scale(' + (nr.height / h) + ')';
+    big.style.clipPath = 'inset(0 0 0 0)';
+    intro.style.pointerEvents = 'none';
+    var glide = big.animate([{ transform: from }, { transform: to }], { duration: 500, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+    var fade = intro.animate([{ backgroundColor: 'rgba(251,247,239,1)' }, { backgroundColor: 'rgba(251,247,239,0)' }], { duration: 420, easing: 'ease-out', fill: 'forwards' });
+    await Promise.all([glide.finished, fade.finished]).catch(function () {});
+    finish();
+  };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(run).catch(finish);
+  setTimeout(finish, 9000);
+})();
+</script>
 <x-dc>
 <helmet>
 <title>Little Buds Pediatric Dentistry | Midlothian & Chesterfield County, VA</title>
@@ -114,12 +169,6 @@
   @keyframes photoMarquee { from { transform:translateX(0%); } to { transform:translateX(-50%); } }
   @keyframes heroCursorBlink { 0%,100% { opacity:1; } 50% { opacity:0; } }
   .tilt-3d { transition:transform 0.2s ease-out; will-change:transform; }
-  @keyframes openingPop { 0% { opacity:0; transform:scale(0.5) rotate(-8deg); } 55% { opacity:1; transform:scale(1.1) rotate(4deg); } 75% { transform:scale(0.97) rotate(-2deg); } 100% { opacity:1; transform:scale(1) rotate(0deg); } }
-  @keyframes openingWobble { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-8px) rotate(2deg); } }
-  @keyframes openingFadeOut { to { opacity:0; visibility:hidden; } }
-  #opening-logo { position:fixed; inset:0; z-index:9999; background:#FBF7EF; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; animation:openingFadeOut 0.6s ease forwards; animation-delay:2.1s; }
-  #opening-logo img { width:min(520px,80vw); height:auto; animation:openingPop 0.9s cubic-bezier(.34,1.56,.64,1) both, openingWobble 1.6s ease-in-out 0.9s infinite; }
-  #opening-logo p { font-family:'Young Serif',Georgia,serif; font-size:20px; color:#4B5D3A; margin-top:18px; opacity:0; animation:fadeUp 0.7s ease-out both; animation-delay:0.7s; }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -154,7 +203,6 @@
     </clipPath>
   </defs>
 </svg>
-<div id="opening-logo"><img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds Pediatric Dentistry"/></div>
 
 <div class="mobile-sticky-cta">
   <a href="#contact" class="book-now">Book Now</a>
@@ -277,9 +325,9 @@
       <a href="#contact" style="display:inline-block;margin-top:22px;background:#C4623B;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;" style-hover="background:#A94F2E;">Know More</a>
     </div>
     <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:{{ logosGap }};margin-top:20px;flex-wrap:nowrap;">
-      <img src="./assets/logo-college-diplomates-mono.webp" alt="College of Diplomates" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
-      <img src="./assets/logo-aapd-mono.webp" alt="American Academy of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
-      <img src="./assets/logo-abpd-mono.webp" alt="American Board of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
+      <img src="./assets/v2-cert-abpd.webp" alt="American Board of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
+      <img src="./assets/v2-cert-aapd.webp" alt="American Academy of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
+      <img src="./assets/v2-cert-diplomates.webp" alt="College of Diplomates of the American Board of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
     </div>
   </section>
 
@@ -983,7 +1031,7 @@ class Component extends DCLogic {
       heroLineDisplay: this.state.isMobile ? 'none' : 'inline-block',
       heroHeadingWrap: this.state.isMobile ? 'normal' : 'nowrap',
       logosGap: this.state.isMobile ? '16px' : '160px',
-      logosHeight: this.state.isMobile ? '60px' : '150px',
+      logosHeight: this.state.isMobile ? '52px' : '110px',
       meetCols: this.state.isMobile ? '1fr' : 'minmax(280px,0.85fr) minmax(300px,1.15fr)',
       principlesCols: this.state.isMobile ? '1fr' : 'minmax(260px,0.8fr) minmax(340px,1.2fr)',
       principlesInnerCols: this.state.isMobile ? '1fr' : 'repeat(2,1fr)',
@@ -1027,7 +1075,7 @@ class Component extends DCLogic {
           { title: 'Emergency Dentistry', body: "Bumps, falls, and sudden toothaches don't wait for a convenient time — and neither do we. Our team is ready to see your child quickly for urgent concerns, with the same warmth and patience as any regular visit. We'll get them out of pain, explain what happened in simple terms, and make a plan to keep their smile healthy going forward. You're never alone when a dental emergency comes up." }
         ];
         const photos = ['./assets/preventive-dentistry.webp', './assets/infant-dentistry.webp', './assets/restorative-dentistry.webp', './assets/emergency-dentistry.webp'];
-        const cardBgs = ['#EFF1E4', '#FBF0E7', '#F5E9C8', '#F6E3D5'];
+        const cardBgs = ['#DDE9C3', '#FCDDC8', '#FAE39C', '#F9CDBB'];
         return list.map((s, i) => ({
           ...s,
           imgOrder: this.state.isMobile ? '1fr' : '1.3fr 1fr',
