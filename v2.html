@@ -11,7 +11,8 @@
 <meta name="theme-color" content="#3F4A32">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap"></noscript>
 <style>
   /* Brand palette, taken from the Little Buds logo */
   :root {
@@ -74,8 +75,8 @@
   .topbar a { color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
   .topbar a:hover { text-decoration: underline; }
   .site-header { position: sticky; top: 0; z-index: 50; padding: 14px 0; margin-bottom: -112px; pointer-events: none; }
-  .site-header .pill { pointer-events: auto; max-width: calc(var(--max) - 16px); margin: 0 auto; background: #fff; border-radius: 999px; box-shadow: 0 10px 30px rgba(63,74,50,.10); padding: 0 14px 0 28px; transition: box-shadow .2s ease; }
-  .site-header.is-scrolled .pill { box-shadow: 0 12px 36px rgba(63,74,50,.16); }
+  .site-header .pill { pointer-events: auto; max-width: calc(var(--max) - 16px); margin: 0 auto; background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(10px) saturate(1.2); backdrop-filter: blur(10px) saturate(1.2); border-radius: 999px; box-shadow: 0 10px 30px rgba(63,74,50,.10); padding: 0 14px 0 28px; transition: background .3s ease, box-shadow .2s ease; }
+  .site-header.is-scrolled .pill, .site-header.menu-open .pill { background: #fff; box-shadow: 0 12px 36px rgba(63,74,50,.16); }
   .site-header.menu-open .pill { border-radius: 28px; }
   .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 84px; }
   .nav-logo img { height: 52px; width: auto; }
@@ -147,7 +148,7 @@
   .hero-wave { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 80px; z-index: 1; }
   .hero-copy { position: relative; z-index: 2; max-width: 640px; }
   .hero h1 { color: #fff; }
-  .hero-copy .where { margin-top: 22px; font-weight: 700; color: #F6C9A8; }
+  .hero-copy .where { display: inline-block; margin-top: 22px; padding: 7px 16px; border-radius: 999px; font-size: 15px; font-weight: 700; color: #fff; background: rgba(196,98,59,.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .hero-copy .lede { margin-top: 14px; color: #F3F1E8; }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
   .hero .btn-line { border-color: #fff; color: #fff; }
@@ -452,14 +453,14 @@
   <div class="hero">
     <div class="hero-media" aria-hidden="true">
       <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="./assets/little-smiles-poster.webp">
-        <source src="./assets/little-smiles-2.mp4?v=3" type="video/mp4">
+        <source src="./assets/little-smiles-2.mp4?v=4" type="video/mp4">
       </video>
     </div>
     <svg class="sprig sway" aria-hidden="true"><use href="#i-sprig"/></svg>
     <div class="wrap" style="width:100%">
       <div class="hero-copy">
         <h1>Where health smiles grow</h1>
-        <p class="where">Midlothian &amp; Chesterfield County's pediatric dentist</p>
+        <p class="where">Midlothian &amp; Chesterfield County's Pediatric Dentist</p>
         <p class="lede">Dr. Vidisha Patel believes every child deserves a dental experience built on kindness and care — a welcoming space to build healthy, confident smiles.</p>
         <div class="hero-ctas">
           <a class="btn btn-terra" href="#contact">Book an appointment</a>
