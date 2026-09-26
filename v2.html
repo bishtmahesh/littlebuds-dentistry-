@@ -90,9 +90,22 @@
   @keyframes dropIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
   .drop-menu a { display: flex; padding: 10px 12px; border-radius: 10px; font-weight: 500; }
   .drop-menu a:hover { background: var(--sage-lt); color: var(--ink); }
-  .drop-menu a[aria-current="page"] { background: var(--sage-lt); font-weight: 700; }
+  .drop-menu a[aria-current="page"] { background: var(--sage-lt); font-weight: 700; justify-content: space-between; }
+  .drop-menu a[aria-current="page"]::after { content: "\2713"; color: var(--terra); font-weight: 700; }
+  .drop-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
+  .drop-menu a { transition: background .15s ease, color .15s ease; }
+  .drop-menu a:hover { color: var(--terra); }
   .nav-actions { display: flex; align-items: center; gap: 18px; }
-  .menu-toggle { display: none; background: none; border: 2px solid var(--ink); border-radius: 999px; padding: 8px 16px; font: 700 15px 'Figtree', sans-serif; color: var(--ink); cursor: pointer; }
+  .menu-toggle { display: none; width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--sage-lt); color: var(--ink); cursor: pointer; align-items: center; justify-content: center; transition: background .2s ease; }
+  .menu-toggle:hover { background: #E1E7D5; }
+  .menu-toggle .bars { position: relative; width: 20px; height: 14px; }
+  .menu-toggle .bars span { position: absolute; left: 0; width: 100%; height: 2px; border-radius: 2px; background: currentColor; transition: transform .25s ease, opacity .2s ease, top .25s ease; }
+  .menu-toggle .bars span:nth-child(1) { top: 0; }
+  .menu-toggle .bars span:nth-child(2) { top: 6px; }
+  .menu-toggle .bars span:nth-child(3) { top: 12px; }
+  .menu-toggle[aria-expanded="true"] .bars span:nth-child(1) { top: 6px; transform: rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] .bars span:nth-child(2) { opacity: 0; }
+  .menu-toggle[aria-expanded="true"] .bars span:nth-child(3) { top: 6px; transform: rotate(-45deg); }
   .mobile-menu { display: none; border-top: 1px solid var(--line); padding: 8px 14px 22px; }
   .mobile-menu a { display: block; padding: 12px 0; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--line); }
   .mobile-menu .sub { padding-left: 18px; font-weight: 500; }
@@ -111,6 +124,19 @@
     .topbar .wrap { justify-content: center; gap: 18px; }
     .topbar .addr { display: none; }
   }
+
+
+  /* Opening animation: icon appears, the wording is swept in, then the logo glides into the nav bar */
+  .intro { position: fixed; inset: 0; z-index: 200; background: var(--cream); }
+  .intro-logo { position: fixed; left: 0; top: 0; width: auto; transform-origin: 0 0; opacity: 0; will-change: transform, clip-path; clip-path: inset(0 67.5% 0 0); }
+  .intro-logo.show-icon { opacity: 1; transition: opacity .6s ease; }
+  .intro-logo.show-all { clip-path: inset(0 0 0 0); transition: clip-path .8s cubic-bezier(.65,0,.35,1); }
+  html.intro-on .nav-logo img { opacity: 0; }
+  html.intro-on, html.intro-on body { overflow: hidden; }
+
+  /* Wavy section dividers */
+  .wave { display: block; width: 100%; height: 70px; }
+  .wave-wrap { line-height: 0; }
 
   /* Hero: full-bleed video, same clip as Version 1 */
   .hero { position: relative; min-height: min(100vh, 900px); display: flex; align-items: center; padding: 170px 0 150px; overflow: hidden; background: var(--ink); color: #fff; }
@@ -256,7 +282,11 @@
   .form input, .form textarea { font: 400 17px 'Figtree', sans-serif; padding: 14px 16px; border: 1.5px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); }
   .form input:focus, .form textarea:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px #DCE3CC; }
   .form .btn { justify-self: start; }
-  .form .fine { font-size: 14px; color: #74786A; }
+  .form .consent { flex-direction: row; align-items: flex-start; gap: 12px; font-size: 14px; font-weight: 500; line-height: 1.55; color: var(--text); cursor: pointer; }
+  .form .consent input { flex-shrink: 0; width: 20px; height: 20px; margin: 1px 0 0; padding: 0; accent-color: var(--terra); cursor: pointer; }
+  .form .consent a { color: var(--ink); font-weight: 700; }
+  .form .consent.has-error input { outline: 2px solid #B3261E; outline-offset: 2px; }
+  .form-error { font-size: 14px; font-weight: 600; color: #B3261E; margin-top: -6px; }
   .info dl { margin: 0; display: grid; gap: 22px; }
   .info dt { font-size: 14px; font-weight: 700; color: var(--terra); }
   .info dd { margin: 4px 0 0; font-weight: 600; color: var(--ink); }
@@ -291,7 +321,7 @@
     .meet-photo { max-width: 420px; }
     .principles-grid { gap: 64px; }
     .principles .frame { max-width: 560px; }
-    .svc { grid-template-columns: 1fr; gap: 28px; }
+    .svc { grid-template-columns: minmax(0, 1fr); gap: 28px; }
     .svc-tabs { flex-direction: row; overflow-x: auto; border-left: 0; border-bottom: 2px solid var(--line); scrollbar-width: none; }
     .svc-tab { border-left: 0; margin-left: 0; border-bottom: 4px solid transparent; margin-bottom: -3px; white-space: nowrap; font-size: 19px; padding: 14px 16px; }
     .svc-tab[aria-selected="true"] { border-bottom-color: var(--terra); }
@@ -348,6 +378,17 @@
   <symbol id="i-tooth" viewBox="0 0 72 78"><path d="M36 12c-4-5-12-8-20-6C7 8 3 16 5 27c2 10 6 17 8 28 2 10 4 20 9 20 6 0 6-18 14-18s8 18 14 18c5 0 7-10 9-20 2-11 6-18 8-28 2-11-2-19-11-21-6-2-12 0-16 3 3 1 6 1 8-1" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 
+<div class="intro" id="intro" aria-hidden="true">
+  <img class="intro-logo" src="./assets/littlebuds-logo.webp?v=2" alt="" width="960" height="259">
+</div>
+<script>
+  // Hide the page under the intro before first paint; skipped for reduced motion
+  (function () {
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (rm) { document.getElementById('intro').remove(); }
+    else { document.documentElement.classList.add('intro-on'); }
+  })();
+</script>
 <a class="skip" href="#main">Skip to content</a>
 
 <div class="topbar">
@@ -367,6 +408,7 @@
         <div class="drop-menu">
           <a href="./index.html">Version 1</a>
           <a href="./v2.html" aria-current="page">Version 2</a>
+          <a href="./v3.html">Version 3</a>
         </div>
       </li>
       <li><a href="#meet">About Us</a></li>
@@ -385,12 +427,13 @@
     </ul>
     <div class="nav-actions">
       <a class="btn btn-terra" href="#contact">Book an appointment</a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span class="bars" aria-hidden="true"><span></span><span></span><span></span></span></button>
     </div>
   </div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
     <a href="./index.html" class="sub">Home: Version 1</a>
     <a href="./v2.html" class="sub" aria-current="page">Home: Version 2</a>
+    <a href="./v3.html" class="sub">Home: Version 3</a>
     <a href="#meet">About Us</a>
     <a href="#services">Services</a>
     <a href="#">Membership Plans</a>
@@ -644,8 +687,12 @@
             <label>Phone<input name="phone" type="tel" autocomplete="tel" required></label>
             <label class="full">Email<input name="email" type="email" autocomplete="email" required></label>
             <label class="full">Message<textarea name="message" rows="4"></textarea></label>
+            <label class="consent full">
+              <input type="checkbox" name="consent" id="consent" required>
+              <span>I agree that Little Buds Pediatric Dentistry may contact me by phone, text message, or email about this appointment request. I understand that my information will be kept private and protected as described in the practice's <a href="#">Notice of Privacy Practices</a>, in line with HIPAA.</span>
+            </label>
+            <p class="form-error full" id="consent-error" role="alert" hidden>Please tick the consent box so our team can contact you.</p>
             <button class="btn btn-terra" type="submit">Request appointment</button>
-            <p class="fine full">Requested time is not final until you receive confirmation from our office. Please do not submit any Protected Health Information (PHI).</p>
           </form>
         </div>
         <div class="card info reveal" style="--d:.12s">
@@ -698,8 +745,50 @@
 (function () {
   var root = document.documentElement;
   root.classList.add('js');
-  window.addEventListener('load', function () { requestAnimationFrame(function () { root.classList.add('loaded'); }); });
-  setTimeout(function () { root.classList.add('loaded'); }, 1500);
+  // Opening animation
+  var intro = document.getElementById('intro');
+  var finishIntro = function () {
+    if (intro && intro.parentNode) intro.parentNode.removeChild(intro);
+    root.classList.remove('intro-on');
+    root.classList.add('loaded');
+  };
+  var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+  var runIntro = async function () {
+    var big = intro.querySelector('.intro-logo');
+    var navLogo = document.querySelector('.nav-logo img');
+    var skipped = false;
+    intro.addEventListener('click', function () { skipped = true; finishIntro(); });
+    // Centre the real logo, sized to the screen
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var h = Math.round(Math.min(Math.max(vw * 0.13, 70), 150));
+    var w = h * 960 / 259;
+    if (w > vw * 0.86) { w = vw * 0.86; h = w * 259 / 960; }
+    var x = (vw - w) / 2, y = (vh - h) / 2;
+    big.style.height = h + 'px';
+    big.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    big.getBoundingClientRect();
+    // 1. icon fades in, straight
+    big.classList.add('show-icon');
+    await wait(600);
+    if (skipped) return;
+    // 2. the wording is swept in from the left
+    big.classList.add('show-all');
+    await wait(1000);
+    if (skipped) return;
+    // 3. glide and shrink into the nav bar logo
+    var nr = navLogo.getBoundingClientRect();
+    var from = 'translate(' + x + 'px,' + y + 'px)';
+    var to = 'translate(' + nr.left + 'px,' + nr.top + 'px) scale(' + (nr.height / h) + ')';
+    big.style.clipPath = 'inset(0 0 0 0)';
+    var glide = big.animate([{ transform: from }, { transform: to }], { duration: 500, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+    var fade = intro.animate([{ backgroundColor: 'rgba(251,247,239,1)' }, { backgroundColor: 'rgba(251,247,239,0)' }], { duration: 420, easing: 'ease-out', fill: 'forwards' });
+    intro.style.pointerEvents = 'none';
+    await Promise.all([glide.finished, fade.finished]).catch(function () {});
+    finishIntro();
+  };
+
+  if (intro) { (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(runIntro).catch(finishIntro); setTimeout(function () { if (intro && intro.parentNode) finishIntro(); }, 9000); }
+  else { window.addEventListener('load', function () { requestAnimationFrame(function () { root.classList.add('loaded'); }); }); setTimeout(function () { root.classList.add('loaded'); }, 1500); }
 
   // Hero video: force muted autoplay, fall back to the poster if it can't play
   var hv = document.getElementById('hero-video');
@@ -731,8 +820,9 @@
     var set = function (open) { d.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); };
     btn.addEventListener('click', function () { var open = !d.classList.contains('is-open'); closeAll(d); set(open); });
     if (window.matchMedia('(hover: hover)').matches) {
-      d.addEventListener('mouseenter', function () { closeAll(d); set(true); });
-      d.addEventListener('mouseleave', function () { set(false); });
+      var t;
+      d.addEventListener('mouseenter', function () { clearTimeout(t); closeAll(d); set(true); });
+      d.addEventListener('mouseleave', function () { clearTimeout(t); t = setTimeout(function () { set(false); }, 250); });
     }
   });
   document.addEventListener('click', function (e) { if (!e.target.closest('.nav-drop')) closeAll(); });
@@ -744,10 +834,10 @@
     var open = !header.classList.contains('menu-open');
     header.classList.toggle('menu-open', open);
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.textContent = open ? 'Close' : 'Menu';
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   });
   document.querySelectorAll('.mobile-menu a').forEach(function (a) {
-    a.addEventListener('click', function () { header.classList.remove('menu-open'); toggle.setAttribute('aria-expanded', 'false'); toggle.textContent = 'Menu'; });
+    a.addEventListener('click', function () { header.classList.remove('menu-open'); toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-label', 'Open menu'); });
   });
 
   // Service tabs
@@ -780,7 +870,19 @@
   });
 
   // Form: same as Version 1, not connected to a mail service yet
-  document.getElementById('appt-form').addEventListener('submit', function (e) { e.preventDefault(); });
+  var form = document.getElementById('appt-form');
+  var consent = document.getElementById('consent');
+  var consentError = document.getElementById('consent-error');
+  var showConsentError = function (on) {
+    consentError.hidden = !on;
+    consent.closest('.consent').classList.toggle('has-error', on);
+    consent.setAttribute('aria-invalid', String(on));
+  };
+  consent.addEventListener('change', function () { if (consent.checked) showConsentError(false); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!consent.checked) { showConsentError(true); consent.focus(); return; }
+  });
 })();
 </script>
 </body>
