@@ -117,13 +117,16 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=DM+Sans:wght@400;500;600;700&family=Lora:wght@500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=DM+Sans:wght@400;500;600;700&family=Lora:wght@500;600&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Montserrat:wght@400;500;600;700&family=Lora:wght@500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chelsea+Market&family=Montserrat:wght@400;500;600;700&family=Lora:wght@500;600&display=swap"></noscript>
 <style>
-  body{margin:0;background:#FBF7EF;font-family:'DM Sans',sans-serif;color:#3A3A30;}
+  body{margin:0;background:#FBF7EF;font-family:'Montserrat',sans-serif;color:#3A3A30;}
   a{color:#C4623B;text-decoration:none;}
   a:hover{color:#4B5D3A;}
-  h1,h2,h3,h4{font-family:'Chelsea Market',cursive;margin:0;font-weight:400;}
+  @font-face { font-family: 'Recoleta'; src: url('./assets/fonts/recoleta-regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+  h1,h2,h3,h4{font-family:'Recoleta','Chelsea Market',cursive;margin:0;font-weight:400;font-synthesis:none;}
+  [style*="Recoleta"]{font-synthesis:none;}
+  button{font-family:'Montserrat',sans-serif;}
   * { box-sizing: border-box; }
   .dd-panel { animation: ddIn .18s ease both; }
   @keyframes ddIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
@@ -282,7 +285,7 @@
     </video>
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(47,59,38,0.35) 0%,rgba(40,48,32,0.72) 100%);z-index:2;pointer-events:none;"></div>
     <div style="position:relative;z-index:3;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:{{ heroPadding }};">
-      <h1 style="font-family:'Chelsea Market',cursive;font-weight:600;font-size:clamp(24px,8vw,84px);line-height:1.15;color:#fff;white-space:{{ heroHeadingWrap }};text-shadow:0 4px 24px rgba(0,0,0,0.25);animation:fadeUp 0.7s ease-out both;animation-delay:0.1s;max-width:95vw;">Where health <span id="hero-typed-white"></span><span id="hero-typed-orange" style="color:#fff;"></span><span id="hero-typed-cursor" style="display:inline-block;width:2px;background:#fff;animation:heroCursorBlink 0.8s step-end infinite;">&nbsp;</span></h1>
+      <h1 style="font-family:'Recoleta','Chelsea Market',cursive;font-weight:400;font-size:clamp(24px,8vw,84px);line-height:1.15;color:#fff;white-space:{{ heroHeadingWrap }};text-shadow:0 4px 24px rgba(0,0,0,0.25);animation:fadeUp 0.7s ease-out both;animation-delay:0.1s;max-width:95vw;">Where health <span id="hero-typed-white"></span><span id="hero-typed-orange" style="color:#fff;"></span><span id="hero-typed-cursor" style="display:inline-block;width:2px;background:#fff;animation:heroCursorBlink 0.8s step-end infinite;">&nbsp;</span></h1>
       <div style="display:flex;align-items:center;gap:16px;margin:22px 0 6px;animation:fadeUp 0.7s ease-out both;animation-delay:0.28s;flex-wrap:wrap;justify-content:center;">
         <span style="width:56px;height:1px;background:rgba(255,255,255,0.5);display:{{ heroLineDisplay }};"></span>
         <span style="background:rgba(196,98,59,0.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font-family:'Chelsea Market',cursive;font-weight:600;font-size:clamp(12px,3.5vw,16px);padding:8px 18px;border-radius:100px;white-space:normal;max-width:90vw;">Midlothian &amp; Chesterfield County's Pediatric Dentist</span>
@@ -480,60 +483,60 @@
       <div style="display:flex;width:max-content;animation:photoMarquee 70s linear infinite;">
         <div style="display:flex;align-items:center;gap:76px;padding-right:76px;">
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
         </div>
         <div style="display:flex;align-items:center;gap:76px;padding-right:76px;" aria-hidden="true">
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-sage.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-terracotta.webp" alt="" style="height:88px;width:auto;display:block;"/>
           <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:64px;width:auto;display:block;"/>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;"><span style="font-family:'Recoleta','Lora',serif;font-weight:600;font-size:22px;color:#4B5D3A;">Little Buds</span><span style="font-family:'Montserrat',sans-serif;font-size:8px;letter-spacing:1.5px;color:#C4623B;font-weight:600;margin-top:2px;">PEDIATRIC DENTISTRY</span></div>
           <img src="./assets/badge-yellow.webp" alt="" style="height:88px;width:auto;display:block;"/>
         </div>
       </div>
@@ -796,8 +799,8 @@
     </svg>
     <div style="max-width:1160px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;position:relative;">
       <div style="max-width:280px;">
-        <div style="background:#fff;border-radius:14px;padding:6px 12px;display:inline-block;margin-bottom:14px;">
-          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds" style="height:80px;width:auto;max-width:100%;display:block;"/>
+        <div style="background:#fff;border-radius:16px;padding:12px 16px;display:inline-block;margin-bottom:18px;">
+          <img src="./assets/littlebuds-logo.webp?v=2" alt="Little Buds Pediatric Dentistry" width="960" height="259" style="width:220px;max-width:100%;height:auto;display:block;"/>
         </div>
         <p style="font-size:14px;line-height:1.6;color:#B9C4A6;">A calm, kind dental home for growing smiles in Midlothian &amp; Chesterfield County, VA.</p>
       </div>

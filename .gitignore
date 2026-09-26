@@ -1,3 +1,6 @@
 .DS_Store
 .thumbnail
 .vercel
+
+# Recoleta is a DEMO font (Latinotype). Keep it out of the repo/live site until a web licence is bought.
+assets/fonts/recoleta*
