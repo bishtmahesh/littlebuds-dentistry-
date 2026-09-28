@@ -28,10 +28,12 @@
   var root = document.documentElement;
   var intro = document.getElementById('intro');
   if (!intro) return;
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { intro.parentNode.removeChild(intro); return; }
+  var alreadyPlayed = false;
+  try { alreadyPlayed = sessionStorage.getItem('lb-intro-played') === '1'; } catch (e) {}
+  if (alreadyPlayed || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) { intro.parentNode.removeChild(intro); return; }
   root.classList.add('intro-on');
   var done = false;
-  var finish = function () { if (done) return; done = true; if (intro.parentNode) intro.parentNode.removeChild(intro); root.classList.remove('intro-on'); };
+  var finish = function () { if (done) return; done = true; if (intro.parentNode) intro.parentNode.removeChild(intro); root.classList.remove('intro-on'); try { sessionStorage.setItem('lb-intro-played', '1'); } catch (e) {} };
   var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
   intro.addEventListener('click', finish);
   var run = async function () {
@@ -167,7 +169,6 @@
   @media (max-width:860px) { .gallery-grid-desktop { display:none !important; } }
   @keyframes floatCard { 0%,100% { transform:translateY(0) translateX(0); } 25% { transform:translateY(-8px) translateX(6px); } 50% { transform:translateY(-14px) translateX(0); } 75% { transform:translateY(-8px) translateX(-6px); } }
   @keyframes photoMarquee { from { transform:translateX(0%); } to { transform:translateX(-50%); } }
-  @keyframes heroCursorBlink { 0%,100% { opacity:1; } 50% { opacity:0; } }
   @media (hover:hover) and (pointer:fine) { .tilt-3d { transition:transform 0.2s ease-out; will-change:transform; } }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -226,32 +227,33 @@
       <img src="./assets/littlebuds-logo.svg" alt="Little Buds Pediatric Dentistry" style="height:{{ logoHeight }};width:auto;display:block;flex-shrink:0;"/>
       <div style="display:{{ navDisplay }};align-items:center;justify-content:flex-end;gap:26px;min-width:0;">
         <nav style="display:flex;align-items:center;gap:26px;font-weight:600;color:{{ navTextColor }};font-size:15px;white-space:nowrap;">
-          <div style="position:relative;" onMouseEnter="{{ openHome }}" onMouseLeave="{{ closeHome }}">
-            <span onClick="{{ toggleHome }}" style="color:{{ navTextColor }};cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;">Home <span class="dd-chev" style="transform:{{ homeChev }};">&#9662;</span></span>
-            <sc-if value="{{ homeOpen }}">
-              <div style="position:absolute;top:100%;left:-10px;padding-top:12px;z-index:5;"><div class="dd-panel" style="background:#fff;border:1px solid #EEE7D8;border-radius:14px;padding:8px;min-width:190px;display:flex;flex-direction:column;gap:2px;box-shadow:0 12px 30px rgba(63,74,50,.12);">
-                <a href="./index.html" aria-current="page" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:700;background:#EEF0E3;">Version 1</a>
-                <a href="./v2.html" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Version 2</a>
-                <a href="./v3.html" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Version 3</a>
+          <a href="./" aria-current="page" style="color:{{ navTextColor }};white-space:nowrap;">Home</a>
+          <div style="position:relative;" onMouseEnter="{{ openAbout }}" onMouseLeave="{{ closeAbout }}">
+            <span onClick="{{ toggleAbout }}" style="color:{{ navTextColor }};cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;">About Us <span class="dd-chev" style="transform:{{ aboutChev }};">&#9662;</span></span>
+            <sc-if value="{{ aboutOpen }}">
+              <div style="position:absolute;top:100%;left:-10px;padding-top:12px;z-index:5;"><div class="dd-panel" style="background:#fff;border:1px solid #EEE7D8;border-radius:14px;padding:8px;min-width:220px;display:flex;flex-direction:column;gap:2px;box-shadow:0 12px 30px rgba(63,74,50,.12);">
+                <a href="./our-story/" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Our Story</a>
+                <a href="./meet-dr-patel/" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Meet Dr. Patel</a>
+                <a href="./office-tour/" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Office Tour</a>
               </div></div>
             </sc-if>
           </div>
-          <a href="#meet" style="color:{{ navTextColor }};white-space:nowrap;">About Us</a>
           <div style="position:relative;" onMouseEnter="{{ openServices }}" onMouseLeave="{{ closeServices }}">
             <span onClick="{{ toggleServices }}" style="color:{{ navTextColor }};cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;">Services <span class="dd-chev" style="transform:{{ servicesChev }};">&#9662;</span></span>
             <sc-if value="{{ servicesOpen }}">
               <div style="position:absolute;top:100%;left:-10px;padding-top:12px;z-index:5;"><div class="dd-panel" style="background:#fff;border:1px solid #EEE7D8;border-radius:14px;padding:8px;min-width:220px;display:flex;flex-direction:column;gap:2px;box-shadow:0 12px 30px rgba(63,74,50,.12);">
-                <a href="#services" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Preventive Dentistry</a>
-                <a href="#services" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Infant Dentistry</a>
-                <a href="#services" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Restorative Dentistry</a>
-                <a href="#services" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Emergency Dentistry</a>
+                <a href="./services/preventive-dentistry/" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Preventive Dentistry</a>
+                <a href="./services/infant-dentistry/" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Infant Dentistry</a>
+                <a href="./services/restorative-dentistry/" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Restorative Dentistry</a>
+                <a href="./services/emergency-dentistry/" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">Emergency Dentistry</a>
+                <a href="./services/" style="color:#3F4A32;padding:10px 12px;border-radius:8px;font-weight:500;">View All Services</a>
               </div></div>
             </sc-if>
           </div>
         </nav>
         <div style="display:flex;align-items:center;gap:26px;font-weight:600;color:{{ navTextColor }};font-size:15px;white-space:nowrap;">
-          <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Insurance</a>
-          <a href="#" style="color:{{ navTextColor }};white-space:nowrap;">Referrals</a>
+          <a href="./insurance/" style="color:{{ navTextColor }};white-space:nowrap;">Insurance</a>
+          <a href="./referrals/" style="color:{{ navTextColor }};white-space:nowrap;">Referrals</a>
           <a href="#contact" style="background:#BB5A34;color:#fff;padding:15px 28px;border-radius:999px;font-weight:700;font-size:16px;line-height:1;white-space:nowrap;flex-shrink:0;" style-hover="background:#A94F2E;">Book an appointment</a>
         </div>
       </div>
@@ -260,13 +262,18 @@
     </div>
     <sc-if value="{{ menuOpen }}">
       <div style="display:flex;flex-direction:column;gap:16px;padding:18px 24px 24px;border-top:1px solid #EAE3D2;font-weight:600;color:#3F4A32;background:#FBF7EF;border-radius:{{ menuRadius }};position:relative;">
-        <a href="./index.html" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Home: Version 1</a>
-        <a href="./v2.html" style="color:#3F4A32;">Home: Version 2</a>
-        <a href="./v3.html" style="color:#3F4A32;">Home: Version 3</a>
-        <a href="#meet" onClick="{{ toggleMenu }}" style="color:#3F4A32;">About Us</a>
-        <a href="#services" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Services</a>
-        <a href="#" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Insurance</a>
-        <a href="#" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Referrals</a>
+        <a href="./" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Home</a>
+        <span style="color:#3F4A32;">About Us</span>
+        <a href="./our-story/" style="color:#55564A;font-weight:500;padding-left:16px;">Our Story</a>
+        <a href="./meet-dr-patel/" style="color:#55564A;font-weight:500;padding-left:16px;">Meet Dr. Patel</a>
+        <a href="./office-tour/" style="color:#55564A;font-weight:500;padding-left:16px;">Office Tour</a>
+        <a href="./services/" style="color:#3F4A32;">Services</a>
+        <a href="./services/preventive-dentistry/" style="color:#55564A;font-weight:500;padding-left:16px;">Preventive Dentistry</a>
+        <a href="./services/infant-dentistry/" style="color:#55564A;font-weight:500;padding-left:16px;">Infant Dentistry</a>
+        <a href="./services/restorative-dentistry/" style="color:#55564A;font-weight:500;padding-left:16px;">Restorative Dentistry</a>
+        <a href="./services/emergency-dentistry/" style="color:#55564A;font-weight:500;padding-left:16px;">Emergency Dentistry</a>
+        <a href="./insurance/" style="color:#3F4A32;">Insurance</a>
+        <a href="./referrals/" style="color:#3F4A32;">Referrals</a>
         <a href="#contact" onClick="{{ toggleMenu }}" style="color:#3F4A32;">Contact</a>
         <a href="tel:+18046010469" style="background:transparent;color:#4B5D3A;border:2px solid #4B5D3A;padding:12px 32px;border-radius:100px;font-weight:700;font-size:15px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Call (804) 601-0469</a>
         <a href="#contact" onClick="{{ toggleMenu }}" style="background:#BB5A34;color:#fff;padding:14px 32px;border-radius:999px;font-weight:700;font-size:15px;text-align:center;">Book an appointment</a>
@@ -283,7 +290,7 @@
     </video>
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(47,59,38,0.35) 0%,rgba(40,48,32,0.72) 100%);z-index:2;pointer-events:none;"></div>
     <div style="position:relative;z-index:3;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:{{ heroPadding }};">
-      <h1 style="font-family:'Chelsea Market',cursive;font-weight:600;font-size:clamp(24px,8vw,84px);line-height:1.15;color:#fff;white-space:{{ heroHeadingWrap }};text-shadow:0 4px 24px rgba(0,0,0,0.25);animation:fadeUp 0.7s ease-out both;animation-delay:0.1s;max-width:95vw;">Where healthy <span id="hero-typed-white"></span><span id="hero-typed-orange" style="color:#fff;"></span><span id="hero-typed-cursor" style="display:inline-block;width:2px;background:#fff;animation:heroCursorBlink 0.8s step-end infinite;">&nbsp;</span></h1>
+      <h1 style="font-family:'Chelsea Market',cursive;font-weight:600;font-size:clamp(24px,8vw,84px);line-height:1.15;color:#fff;white-space:{{ heroHeadingWrap }};text-shadow:0 4px 24px rgba(0,0,0,0.25);animation:fadeUp 0.7s ease-out both;animation-delay:0.1s;max-width:95vw;">Where healthy smiles grow</h1>
       <div style="display:flex;align-items:center;gap:16px;margin:22px 0 6px;animation:fadeUp 0.7s ease-out both;animation-delay:0.28s;flex-wrap:wrap;justify-content:center;">
         <span style="width:56px;height:1px;background:rgba(255,255,255,0.5);display:{{ heroLineDisplay }};"></span>
         <span style="background:rgba(196,98,59,0.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font-family:'Chelsea Market',cursive;font-weight:600;font-size:clamp(12px,3.5vw,16px);padding:8px 18px;border-radius:100px;white-space:normal;max-width:90vw;">Midlothian &amp; Chesterfield County's Pediatric Dentist</span>
@@ -301,14 +308,6 @@
   <!-- MEET THE DENTIST -->
   <section id="meet" style="max-width:1280px;margin:0 auto;padding:100px 24px 24px;position:relative;overflow:hidden;display:grid;grid-template-columns:{{ meetCols }};column-gap:60px;row-gap:20px;align-items:center;">
     <img class="decor-mobile-hide" src="./assets/leaf-branch-sticker.svg" alt="" style="position:absolute;top:30px;right:30px;width:120px;height:auto;transform:rotate(15deg);opacity:0.9;pointer-events:none;z-index:0;"/>
-    <svg class="bg-rotor" width="360" height="360" viewBox="0 0 100 100" style="position:absolute;top:-4%;right:-6%;opacity:0.55;pointer-events:none;z-index:0;">
-      <g fill="#EAF0DE">
-        <ellipse cx="35" cy="58" rx="18" ry="14"/>
-        <ellipse cx="55" cy="48" rx="24" ry="19"/>
-        <ellipse cx="72" cy="58" rx="16" ry="13"/>
-        <rect x="24" y="55" width="56" height="18" rx="9"/>
-      </g>
-    </svg>
     <div style="position:relative;">
       <image-slot id="dentist-photo" shape="rect" mask="polygon(96.98% 50.00%, 97.33% 56.23%, 96.13% 62.36%, 94.06% 68.25%, 90.89% 73.61%, 87.14% 78.50%, 83.11% 83.11%, 78.54% 87.19%, 73.87% 91.34%, 68.04% 93.56%, 62.08% 95.10%, 55.96% 95.30%, 50.00% 96.71%, 43.83% 96.85%, 37.79% 95.58%, 31.85% 93.82%, 26.09% 91.41%, 20.36% 88.62%, 15.94% 84.06%, 12.70% 78.62%, 10.06% 73.06%, 7.51% 67.60%, 5.71% 61.87%, 4.29% 56.02%, 4.30% 50.00%, 4.74% 44.04%, 5.53% 38.08%, 7.20% 32.27%, 8.89% 26.26%, 12.27% 21.05%, 16.17% 16.17%, 21.17% 12.43%, 26.22% 8.82%, 31.90% 6.31%, 37.84% 4.62%, 43.81% 2.95%, 50.00% 1.78%, 56.40% 1.41%, 62.58% 3.05%, 68.23% 5.99%, 73.39% 9.49%, 78.11% 13.36%, 82.41% 17.59%, 86.97% 21.64%, 90.49% 26.62%, 94.21% 31.69%, 95.70% 37.75%, 96.98% 43.81%)" fit="cover" placeholder="Dr. Patel's photo (per client email)" src="./assets/dentist-photo.webp" style="width:100%;aspect-ratio:4/5;"></image-slot>
       <svg width="26" height="26" viewBox="0 0 24 24" style="position:absolute;top:-6px;right:18%;color:#C4623B;"><path d="M12 2l1.6 6.2L20 10l-6.4 1.8L12 18l-1.6-6.2L4 10l6.4-1.8z" fill="currentColor" opacity="0.7"/></svg>
@@ -316,16 +315,15 @@
     </div>
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
         <h2 style="font-size:clamp(32px,4.2vw,46px);color:#3F4A32;">Meet Dr. Vidisha Patel!</h2>
       </div>
       <p style="font-size:16.5px;line-height:1.75;color:#55564A;">Dr. Vidisha Patel founded Little Buds Pediatric Dentistry to give children in Midlothian and throughout Chesterfield County a place where they can feel comfortable and confident at the dentist. With compassion and patience at the heart of every visit, she's dedicated to helping your child build healthy habits and a positive relationship with dental care that lasts a lifetime.</p>
-      <a href="#contact" style="display:inline-block;margin-top:22px;background:#C4623B;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;" style-hover="background:#A94F2E;">Know More</a>
-    </div>
-    <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:{{ logosGap }};margin-top:20px;flex-wrap:nowrap;">
-      <img src="./assets/v2-cert-abpd.webp" alt="American Board of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
-      <img src="./assets/v2-cert-aapd.webp" alt="American Academy of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
-      <img src="./assets/v2-cert-diplomates.webp" alt="College of Diplomates of the American Board of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/>
+      <div style="display:flex;align-items:center;flex-wrap:nowrap;width:fit-content;gap:{{ logosGap }};margin:28px 0 24px;padding:24px 0;border-top:1px solid rgba(60,60,40,0.14);border-bottom:1px solid rgba(60,60,40,0.14);">
+        <a href="https://www.abpd.org/" target="_blank" rel="noopener" aria-label="American Board of Pediatric Dentistry (opens in a new tab)"><img src="./assets/v2-cert-abpd.webp" alt="American Board of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/></a>
+        <a href="https://www.aapd.org/" target="_blank" rel="noopener" aria-label="American Academy of Pediatric Dentistry (opens in a new tab)"><img src="./assets/v2-cert-aapd.webp" alt="American Academy of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/></a>
+        <a href="https://www.collegeofdiplomates.org/" target="_blank" rel="noopener" aria-label="College of Diplomates of the American Board of Pediatric Dentistry (opens in a new tab)"><img src="./assets/v2-cert-diplomates.webp" alt="College of Diplomates of the American Board of Pediatric Dentistry" style="height:{{ logosHeight }};width:auto;object-fit:contain;flex-shrink:1;min-width:0;"/></a>
+      </div>
+      <a href="./meet-dr-patel/" style="display:inline-block;background:#C4623B;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:15px;" style-hover="background:#A94F2E;">Learn More</a>
     </div>
   </section>
 
@@ -348,7 +346,6 @@
     <div style="max-width:1280px;margin:0 auto;position:relative;">
       <div style="text-align:center;max-width:640px;margin:0 auto 50px;">
         <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
-          <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
           <h2 style="font-size:clamp(32px,4.2vw,46px);color:#3F4A32;">Take a look inside</h2>
         </div>
         <p style="font-size:15.5px;line-height:1.7;color:#66675A;margin-top:14px;">A calm, playful space designed around growing smiles — from our reception nook to our treatment rooms.</p>
@@ -416,12 +413,6 @@
     </div>
     <div style="position:relative;">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
-        <svg width="34" height="18" viewBox="0 0 46 24">
-          <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#C9D4B6"/>
-          <path d="M2 20 Q12 8 24 6" stroke="#8FA06E" stroke-width="1" fill="none"/>
-          <path d="M22 20 Q30 4 44 8 Q38 22 22 20 Z" fill="#C9D4B6"/>
-          <path d="M22 20 Q32 10 44 8" stroke="#8FA06E" stroke-width="1" fill="none"/>
-        </svg>
         <h2 style="font-size:clamp(30px,3.8vw,42px);color:#3F4A32;">A little different, on purpose</h2>
       </div>
       <div style="display:grid;grid-template-columns:{{ principlesInnerCols }};row-gap:36px;column-gap:36px;">
@@ -456,7 +447,6 @@
     <div style="max-width:1160px;margin:0 auto;">
       <div style="text-align:center;max-width:640px;margin:0 auto 90px;">
         <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
-          <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
           <h2 style="font-size:clamp(32px,4.2vw,46px);color:#4B5D3A;">Preparing for your child's first visit</h2>
         </div>
         <p style="font-size:15.5px;line-height:1.7;color:#55564A;margin-top:16px;">Taking the time to prepare will ensure it's smooth and seamless. Let us know if there's anything we can do to help make it a memorable experience.</p>
@@ -560,10 +550,9 @@
     </svg>
     <div style="max-width:900px;margin:0 auto;text-align:center;position:relative;">
       <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:44px;">
-        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
         <h2 style="font-size:clamp(28px,3.6vw,40px);color:#3F4A32;">What families are saying</h2>
       </div>
-      <div style="background:#F8E2D5;clip-path:{{ testimonialClip }};border-radius:{{ testimonialRadius }};padding:{{ testimonialPadding }};position:relative;animation:floatCard 8s ease-in-out infinite;">
+      <div style="background:{{ reviewBg }};transition:background .4s ease;clip-path:{{ testimonialClip }};border-radius:{{ testimonialRadius }};padding:{{ testimonialPadding }};position:relative;animation:floatCard 8s ease-in-out infinite;">
         <svg width="70" height="36" viewBox="0 0 46 24" style="position:absolute;top:26px;left:50%;transform:translateX(-50%);opacity:0.8;">
           <path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#7C8D64"/>
           <path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/>
@@ -571,10 +560,15 @@
           <path d="M22 20 Q32 10 44 8" stroke="#4B5D3A" stroke-width="1" fill="none"/>
         </svg>
         <div style="max-width:560px;margin:0 auto;">
-          <p style="font-size:17px;line-height:1.7;color:#4A3A30;font-family:'Chelsea Market',cursive;font-weight:500;">"We visited the office for the first time this week. There's a welcoming message on the board for my kids. Dr. Patel was very patient and answered all the questions that we had — we didn't feel rushed at all. Every kid gets a goodie bag and a little toy at the end. Everybody was so incredibly friendly."</p>
+          <p style="font-size:17px;line-height:1.7;color:#4A3A30;font-family:'Chelsea Market',cursive;font-weight:500;min-height:{{ reviewMinH }};" aria-live="polite">&ldquo;{{ reviewText }}&rdquo;</p>
         </div>
-        <div style="margin-top:22px;font-weight:700;color:#A94F2E;">Shirley Nunez</div>
+        <div style="margin-top:22px;font-weight:700;color:#A94F2E;">{{ reviewName }}</div>
         <a href="#contact" style="display:inline-block;margin-top:16px;font-weight:700;color:#A94F2E;">Read More Reviews &rarr;</a>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:30px;position:relative;">
+        <button type="button" onClick="{{ prevReview }}" aria-label="Previous review" style="width:52px;height:52px;border-radius:50%;border:2px solid #4B5D3A;background:#fff;color:#4B5D3A;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;" style-hover="background:#4B5D3A;color:#fff;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <span style="font-weight:700;color:#3F4A32;font-size:15px;min-width:52px;">{{ reviewCount }}</span>
+        <button type="button" onClick="{{ nextReview }}" aria-label="Next review" style="width:52px;height:52px;border-radius:50%;border:2px solid #4B5D3A;background:#fff;color:#4B5D3A;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;" style-hover="background:#4B5D3A;color:#fff;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
       </div>
     </div>
   </section>
@@ -609,7 +603,6 @@
     </div>
     <div style="text-align:center;max-width:640px;margin:0 auto 60px;position:relative;">
       <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
-        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
         <h2 style="font-size:clamp(32px,4.2vw,46px);color:#3F4A32;">Care for every stage of growth</h2>
       </div>
     </div>
@@ -621,7 +614,7 @@
             <div style="order:{{ s.textOrder }};padding:{{ s.textPad }};">
               <h3 style="font-size:23px;color:#3F4A32;margin-bottom:12px;">{{ s.title }}</h3>
               <p style="font-size:15.5px;line-height:1.7;color:#66675A;margin-bottom:16px;">{{ s.body }}</p>
-              <a href="#contact" style="font-weight:700;color:#C4623B;font-size:14.5px;">Learn More &rarr;</a>
+              <a href="{{ s.link }}" style="font-weight:700;color:#C4623B;font-size:14.5px;">Learn More &rarr;</a>
             </div>
           </div>
         </div>
@@ -686,7 +679,6 @@
     </svg>
     <div style="text-align:center;max-width:560px;margin:0 auto 50px;">
       <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
-        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
         <h2 style="font-size:clamp(20px,5.2vw,42px);color:#3F4A32;white-space:nowrap;">Questions parents ask us</h2>
       </div>
       <p style="font-size:15.5px;line-height:1.7;color:#66675A;margin-top:14px;">A few things families often want to know before their first visit.</p>
@@ -734,7 +726,6 @@
     <div style="max-width:1160px;margin:0 auto;position:relative;display:grid;grid-template-columns:{{ contactCols }};gap:60px;">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-        <svg width="34" height="18" viewBox="0 0 46 24"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#8FA06E"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>
         <h2 style="font-size:clamp(30px,4vw,42px);color:#3F4A32;">Request an appointment</h2>
       </div>
       <p style="font-family:'Chelsea Market',cursive;color:#C4623B;font-size:15px;margin-bottom:24px;">Parents, take a moment.</p>
@@ -792,22 +783,22 @@
           <h4 style="color:#fff;font-size:15px;margin-bottom:14px;">Explore</h4>
           <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
             <a href="./index.html" style="color:#DCE3CC;">Home</a>
-            <a href="#meet" style="color:#DCE3CC;">About Us</a>
-            <a href="#services" style="color:#DCE3CC;">Services</a>
-            <a href="#" style="color:#DCE3CC;">Insurance</a>
-            <a href="#" style="color:#DCE3CC;">Blog</a>
-            <a href="#" style="color:#DCE3CC;">Referrals</a>
-            <a href="#first-visit" style="color:#DCE3CC;">First Visit</a>
+            <a href="./our-story/" style="color:#DCE3CC;">Our Story</a>
+            <a href="./meet-dr-patel/" style="color:#DCE3CC;">Meet Dr. Patel</a>
+            <a href="./office-tour/" style="color:#DCE3CC;">Office Tour</a>
+            <a href="./insurance/" style="color:#DCE3CC;">Insurance</a>
+            <a href="./blog/" style="color:#DCE3CC;">Blog</a>
+            <a href="./referrals/" style="color:#DCE3CC;">Referrals</a>
             <a href="#contact" style="color:#DCE3CC;">Contact</a>
           </div>
         </div>
         <div>
           <h4 style="color:#fff;font-size:15px;margin-bottom:14px;">Services</h4>
           <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
-            <a href="#services" style="color:#DCE3CC;">Preventive Dentistry</a>
-            <a href="#services" style="color:#DCE3CC;">Infant Dentistry</a>
-            <a href="#services" style="color:#DCE3CC;">Restorative Dentistry</a>
-            <a href="#services" style="color:#DCE3CC;">Emergency Dentistry</a>
+            <a href="./services/preventive-dentistry/" style="color:#DCE3CC;">Preventive Dentistry</a>
+            <a href="./services/infant-dentistry/" style="color:#DCE3CC;">Infant Dentistry</a>
+            <a href="./services/restorative-dentistry/" style="color:#DCE3CC;">Restorative Dentistry</a>
+            <a href="./services/emergency-dentistry/" style="color:#DCE3CC;">Emergency Dentistry</a>
           </div>
         </div>
         <div>
@@ -834,7 +825,16 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { menuOpen: false, videoFailed: false, scrolled: false, servicesOpen: false, homeOpen: false, isMobile: false, navCompact: false, openFaq: 0 };
+  state = { menuOpen: false, videoFailed: false, scrolled: false, servicesOpen: false, homeOpen: false, aboutOpen: false, isMobile: false, navCompact: false, openFaq: 0, reviewIndex: 0 };
+  // Reviews carousel. Only the first review is real; the others are PLACEHOLDERS to be replaced with real reviews before launch.
+  reviews = [
+    { text: "We visited the office for the first time this week. There's a welcoming message on the board for my kids. Dr. Patel was very patient and answered all the questions that we had \u2014 we didn't feel rushed at all. Every kid gets a goodie bag and a little toy at the end. Everybody was so incredibly friendly.", name: 'Shirley Nunez', bg: '#F8E2D5' },
+    { text: 'PLACEHOLDER: paste a real review from a Little Buds family here (for example, from Google).', name: 'Parent name', bg: '#DDE9C3' },
+    { text: 'PLACEHOLDER: paste a real review from a Little Buds family here (for example, from Google).', name: 'Parent name', bg: '#FAE39C' },
+    { text: 'PLACEHOLDER: paste a real review from a Little Buds family here (for example, from Google).', name: 'Parent name', bg: '#F9CDBB' }
+  ];
+  prevReview = () => this.setState(s => ({ reviewIndex: (s.reviewIndex - 1 + this.reviews.length) % this.reviews.length }));
+  nextReview = () => this.setState(s => ({ reviewIndex: (s.reviewIndex + 1) % this.reviews.length }));
 
   toggleMenu = () => this.setState(s => ({ menuOpen: !s.menuOpen }));
   toggleFaq = (i) => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i }));
@@ -850,12 +850,15 @@ class Component extends DCLogic {
     }
   };
   handleVideoError = () => this.setState({ videoFailed: true });
-  openHome = () => { clearTimeout(this.homeTimer); clearTimeout(this.servicesTimer); this.setState({ homeOpen: true, servicesOpen: false }); };
+  openHome = () => { clearTimeout(this.homeTimer); clearTimeout(this.servicesTimer); clearTimeout(this.aboutTimer); this.setState({ homeOpen: true, servicesOpen: false, aboutOpen: false }); };
+  openAbout = () => { clearTimeout(this.aboutTimer); clearTimeout(this.homeTimer); clearTimeout(this.servicesTimer); this.setState({ aboutOpen: true, homeOpen: false, servicesOpen: false }); };
+  closeAbout = () => { clearTimeout(this.aboutTimer); this.aboutTimer = setTimeout(() => this.setState({ aboutOpen: false }), 250); };
+  toggleAbout = () => { clearTimeout(this.aboutTimer); this.setState(s => ({ aboutOpen: !s.aboutOpen, homeOpen: false, servicesOpen: false })); };
   closeHome = () => { clearTimeout(this.homeTimer); this.homeTimer = setTimeout(() => this.setState({ homeOpen: false }), 250); };
-  openServices = () => { clearTimeout(this.servicesTimer); clearTimeout(this.homeTimer); this.setState({ servicesOpen: true, homeOpen: false }); };
+  openServices = () => { clearTimeout(this.servicesTimer); clearTimeout(this.homeTimer); clearTimeout(this.aboutTimer); this.setState({ servicesOpen: true, homeOpen: false, aboutOpen: false }); };
   closeServices = () => { clearTimeout(this.servicesTimer); this.servicesTimer = setTimeout(() => this.setState({ servicesOpen: false }), 250); };
-  toggleHome = () => { clearTimeout(this.homeTimer); this.setState(s => ({ homeOpen: !s.homeOpen, servicesOpen: false })); };
-  toggleServices = () => { clearTimeout(this.servicesTimer); this.setState(s => ({ servicesOpen: !s.servicesOpen, homeOpen: false })); };
+  toggleHome = () => { clearTimeout(this.homeTimer); this.setState(s => ({ homeOpen: !s.homeOpen, servicesOpen: false, aboutOpen: false })); };
+  toggleServices = () => { clearTimeout(this.servicesTimer); this.setState(s => ({ servicesOpen: !s.servicesOpen, homeOpen: false, aboutOpen: false })); };
   handleScroll = () => {
     const hdr = document.getElementById('lb-header');
     if (hdr) { const gap = this.state.isMobile ? 10 : 14; hdr.style.top = Math.max(gap, 42 + gap - window.scrollY) + 'px'; }
@@ -895,26 +898,6 @@ class Component extends DCLogic {
       const el = document.getElementById('hero-video-el');
       if (!el || el.readyState < 2) this.setState({ videoFailed: true });
     }, 8000);
-
-    const whiteEl = document.getElementById('hero-typed-white');
-    const orangeEl = document.getElementById('hero-typed-orange');
-    if (whiteEl && orangeEl) {
-      const whiteText = 'smiles ';
-      const orangeText = 'grow';
-      let i = 0;
-      const typeSpeed = 80;
-      const typeNext = () => {
-        const full = whiteText + orangeText;
-        if (i <= full.length) {
-          const typed = full.slice(0, i);
-          whiteEl.textContent = typed.slice(0, whiteText.length);
-          orangeEl.textContent = typed.slice(whiteText.length);
-          i++;
-          setTimeout(typeNext, typeSpeed);
-        }
-      };
-      setTimeout(typeNext, 500);
-    }
 
     if (window.gsap && window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
@@ -1046,6 +1029,11 @@ class Component extends DCLogic {
       navPad: this.state.isMobile ? '0 70px 0 18px' : '0 14px 0 28px',
       burgerLabel: this.state.menuOpen ? 'Close menu' : 'Open menu',
       homeOpen: this.state.homeOpen,
+      aboutOpen: this.state.aboutOpen,
+      aboutChev: this.state.aboutOpen ? 'rotate(180deg)' : 'none',
+      openAbout: this.openAbout,
+      closeAbout: this.closeAbout,
+      toggleAbout: this.toggleAbout,
       homeChev: this.state.homeOpen ? 'rotate(180deg)' : 'none',
       servicesChev: this.state.servicesOpen ? 'rotate(180deg)' : 'none',
       toggleHome: this.toggleHome,
@@ -1059,14 +1047,21 @@ class Component extends DCLogic {
       heroPadding: this.state.isMobile ? '120px 20px 40px' : '140px 24px 40px',
       heroLineDisplay: this.state.isMobile ? 'none' : 'inline-block',
       heroHeadingWrap: this.state.isMobile ? 'normal' : 'nowrap',
-      logosGap: this.state.isMobile ? '16px' : '160px',
-      logosHeight: this.state.isMobile ? '52px' : '110px',
+      logosGap: this.state.isMobile ? '16px' : '32px',
+      logosHeight: this.state.isMobile ? '48px' : '68px',
       meetCols: this.state.isMobile ? '1fr' : 'minmax(280px,0.85fr) minmax(300px,1.15fr)',
       principlesCols: this.state.isMobile ? '1fr' : 'minmax(260px,0.8fr) minmax(340px,1.2fr)',
       principlesInnerCols: this.state.isMobile ? '1fr' : 'repeat(2,1fr)',
       contactCols: this.state.isMobile ? '1fr' : 'minmax(300px,1fr) minmax(300px,1fr)',
       testimonialClip: this.state.isMobile ? 'none' : 'polygon(0% 26%, 4.0% 19.5%, 6.9% 17.7%, 9.8% 15.5%, 12.6% 12.9%, 15.5% 10.3%, 18.4% 8.1%, 21.2% 6.6%, 24.1% 5.7%, 27.0% 5.2%, 29.9% 4.8%, 32.8% 4.2%, 35.6% 3.6%, 38.5% 3.0%, 41.4% 2.5%, 44.2% 2.2%, 47.1% 2.1%, 50.0% 2.2%, 52.9% 2.4%, 55.8% 2.8%, 58.6% 3.2%, 61.5% 3.7%, 64.4% 4.1%, 67.2% 4.5%, 70.1% 5.1%, 73.0% 5.9%, 75.9% 6.9%, 78.8% 8.0%, 81.6% 9.0%, 84.5% 10.0%, 87.4% 11.2%, 90.2% 12.7%, 93.1% 14.7%, 96.0% 16.8%, 100% 26%, 100% 74%, 96.0% 91.0%, 93.1% 91.5%, 90.2% 92.0%, 87.4% 92.7%, 84.5% 93.4%, 81.6% 94.1%, 78.8% 94.8%, 75.9% 95.4%, 73.0% 95.9%, 70.1% 96.3%, 67.2% 96.5%, 64.4% 96.7%, 61.5% 96.8%, 58.6% 96.8%, 55.8% 96.7%, 52.9% 96.7%, 50.0% 96.6%, 47.1% 96.6%, 44.2% 96.5%, 41.4% 96.4%, 38.5% 96.3%, 35.6% 96.2%, 32.8% 96.0%, 29.9% 95.7%, 27.0% 95.2%, 24.1% 94.7%, 21.2% 94.1%, 18.4% 93.4%, 15.5% 92.8%, 12.6% 92.1%, 9.8% 91.6%, 6.9% 91.1%, 4.0% 90.8%, 0% 74%)',
       testimonialRadius: this.state.isMobile ? '28px' : '0',
+      reviewText: this.reviews[this.state.reviewIndex].text,
+      reviewName: this.reviews[this.state.reviewIndex].name,
+      reviewBg: this.reviews[this.state.reviewIndex].bg,
+      reviewCount: (this.state.reviewIndex + 1) + ' / ' + this.reviews.length,
+      reviewMinH: this.state.isMobile ? '0' : '174px',
+      prevReview: this.prevReview,
+      nextReview: this.nextReview,
       testimonialPadding: this.state.isMobile ? '50px 24px 40px' : '90px 60px 80px',
       stepsContainerStyle: this.state.isMobile
         ? 'max-width:520px;margin:0 auto;'
@@ -1107,7 +1102,7 @@ class Component extends DCLogic {
         const cardBgs = ['#DDE9C3', '#FCDDC8', '#FAE39C', '#F9CDBB'];
         return list.map((s, i) => ({
           ...s,
-          imgOrder: this.state.isMobile ? '1fr' : '1.3fr 1fr',
+          imgOrder: this.state.isMobile ? '1fr' : '1.5fr 1fr',
           // Mobile: photo always on top and full card width
           order: this.state.isMobile || i % 2 === 0 ? 1 : 2,
           textOrder: this.state.isMobile || i % 2 === 0 ? 2 : 1,
@@ -1122,10 +1117,9 @@ class Component extends DCLogic {
             ? 'polygon(88.3% 50.0%, 89.4% 64.3%, 78.8% 74.1%, 66.8% 79.1%, 55.8% 83.0%, 44.2% 82.8%, 32.3% 80.6%, 18.8% 76.2%, 11.5% 64.0%, 16.3% 50.0%, 21.8% 39.7%, 23.6% 27.9%, 30.8% 16.8%, 43.3% 12.1%, 56.7% 11.9%, 68.3% 18.2%, 74.0% 29.9%, 79.2% 39.4%)'
             : 'polygon(89.6% 50.0%, 82.4% 61.8%, 75.2% 71.2%, 66.4% 78.3%, 56.0% 83.9%, 43.1% 89.3%, 28.9% 86.5%, 22.6% 73.0%, 21.9% 60.2%, 17.6% 50.0%, 14.8% 37.2%, 20.1% 24.9%, 30.4% 16.0%, 43.5% 13.0%, 55.6% 18.4%, 64.9% 24.1%, 77.7% 26.7%, 89.5% 35.6%)',
           photo: photos[i],
+          link: ['./services/preventive-dentistry/', './services/infant-dentistry/', './services/restorative-dentistry/', './services/emergency-dentistry/'][i],
           cardBg: cardBgs[i],
-          blobMask: i % 2 === 0
-            ? 'polygon(99.58% 50.00%, 99.29% 56.49%, 97.51% 62.73%, 94.39% 68.39%, 90.24% 73.23%, 85.37% 77.14%, 80.13% 80.13%, 74.80% 82.32%, 69.55% 83.86%, 64.48% 84.95%, 59.57% 85.73%, 54.78% 86.29%, 50.00% 86.63%, 45.17% 86.68%, 40.26% 86.35%, 35.29% 85.50%, 30.35% 84.04%, 25.52% 81.90%, 20.95% 79.05%, 16.75% 75.51%, 13.02% 71.35%, 9.85% 66.63%, 7.31% 61.44%, 5.47% 55.86%, 4.40% 50.00%, 4.18% 43.97%, 4.91% 37.92%, 6.64% 32.04%, 9.39% 26.55%, 13.10% 21.69%, 17.66% 17.66%, 22.87% 14.64%, 28.46% 12.70%, 34.18% 11.81%, 39.78% 11.85%, 45.08% 12.60%, 50.00% 13.81%, 54.58% 15.23%, 58.93% 16.67%, 63.24% 18.04%, 67.67% 19.40%, 72.34% 20.88%, 77.28% 22.72%, 82.36% 25.17%, 87.35% 28.43%, 91.92% 32.63%, 95.70% 37.75%, 98.34% 43.64%)'
-            : 'polygon(86.06% 50.00%, 85.76% 54.71%, 85.26% 59.45%, 84.44% 64.26%, 83.14% 69.14%, 81.24% 73.97%, 78.63% 78.63%, 75.29% 82.96%, 71.25% 86.81%, 66.58% 90.03%, 61.40% 92.55%, 55.83% 94.28%, 50.00% 95.20%, 44.04% 95.27%, 38.09% 94.47%, 32.28% 92.78%, 26.80% 90.19%, 21.81% 86.73%, 17.52% 82.48%, 14.10% 77.54%, 11.68% 72.12%, 10.32% 66.43%, 10.00% 60.72%, 10.58% 55.19%, 11.88% 50.00%, 13.65% 45.21%, 15.67% 40.80%, 17.75% 36.64%, 19.82% 32.58%, 21.90% 28.44%, 24.11% 24.11%, 26.67% 19.59%, 29.78% 14.98%, 33.65% 10.52%, 38.35% 6.53%, 43.86% 3.37%, 50.00% 1.38%, 56.48% 0.81%, 62.92% 1.78%, 68.95% 4.25%, 74.24% 8.02%, 78.55% 12.79%, 81.80% 18.20%, 84.01% 23.90%, 85.35% 29.59%, 86.02% 35.08%, 86.25% 40.29%, 86.23% 45.23%)',
+          blobMask: 'polygon(96.98% 50.00%, 97.33% 56.23%, 96.13% 62.36%, 94.06% 68.25%, 90.89% 73.61%, 87.14% 78.50%, 83.11% 83.11%, 78.54% 87.19%, 73.87% 91.34%, 68.04% 93.56%, 62.08% 95.10%, 55.96% 95.30%, 50.00% 96.71%, 43.83% 96.85%, 37.79% 95.58%, 31.85% 93.82%, 26.09% 91.41%, 20.36% 88.62%, 15.94% 84.06%, 12.70% 78.62%, 10.06% 73.06%, 7.51% 67.60%, 5.71% 61.87%, 4.29% 56.02%, 4.30% 50.00%, 4.74% 44.04%, 5.53% 38.08%, 7.20% 32.27%, 8.89% 26.26%, 12.27% 21.05%, 16.17% 16.17%, 21.17% 12.43%, 26.22% 8.82%, 31.90% 6.31%, 37.84% 4.62%, 43.81% 2.95%, 50.00% 1.78%, 56.40% 1.41%, 62.58% 3.05%, 68.23% 5.99%, 73.39% 9.49%, 78.11% 13.36%, 82.41% 17.59%, 86.97% 21.64%, 90.49% 26.62%, 94.21% 31.69%, 95.70% 37.75%, 96.98% 43.81%)',
           stackTop: 96 + i * 14,
           zIndex: i + 1
         }));
