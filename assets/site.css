@@ -370,6 +370,22 @@ button, input, select, textarea { font-family: inherit; }
 .lb-article-callout strong { color: var(--ink); }
 .lb-article-back { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--terra); font-size: 14.5px; margin-bottom: 8px; }
 
+/* ---------- Reviews carousel ---------- */
+@keyframes floatCard { 0%,100% { transform: translateY(0) translateX(0); } 25% { transform: translateY(-8px) translateX(6px); } 50% { transform: translateY(-14px) translateX(0); } 75% { transform: translateY(-8px) translateX(-6px); } }
+.lb-reviews { padding: 100px 24px; text-align: center; }
+.lb-reviews .wrap { max-width: 900px; }
+.lb-review-card { position: relative; padding: 64px 60px 40px; border-radius: 28px; animation: floatCard 8s ease-in-out infinite; transition: background .4s ease; }
+.lb-review-leaf { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); opacity: 0.8; }
+.lb-review-text-wrap { max-width: 560px; margin: 0 auto; }
+.lb-review-text { font-size: 17px; line-height: 1.7; color: #4A3A30; font-family: 'Chelsea Market', cursive; font-weight: 500; min-height: 96px; }
+.lb-review-name { margin-top: 22px; font-weight: 700; color: #A94F2E; }
+.lb-review-more { display: inline-block; margin-top: 16px; font-weight: 700; color: #A94F2E; }
+.lb-review-nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 30px; }
+.lb-review-prev, .lb-review-next { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--leaf); background: #fff; color: var(--leaf); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background .2s ease, color .2s ease; }
+.lb-review-prev:hover, .lb-review-next:hover { background: var(--leaf); color: #fff; }
+.lb-review-count { font-weight: 700; color: var(--ink); font-size: 15px; min-width: 52px; }
+@media (max-width: 720px) { .lb-review-card { padding: 56px 24px 32px; } }
+
 /* ---------- Reveal on scroll (plays once) ---------- */
 .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
 .js .reveal.in { opacity: 1; transform: none; }

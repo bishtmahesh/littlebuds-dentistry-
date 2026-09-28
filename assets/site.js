@@ -28,6 +28,14 @@
     { label: 'Emergency Dentistry', href: '/services/emergency-dentistry/' },
     { label: 'View All Services', href: '/services/' }
   ];
+  // Reviews carousel. Only the first review is real; the others are PLACEHOLDERS to be replaced with real reviews before launch.
+  var REVIEWS = [
+    { text: 'We visited the office for the first time this week. There’s a welcoming message on the board for my kids. Dr. Patel was very patient and answered all the questions that we had — we didn’t feel rushed at all. Every kid gets a goodie bag and a little toy at the end. Everybody was so incredibly friendly.', name: 'Shirley Nunez', bg: '#F8E2D5' },
+    { text: 'PLACEHOLDER: paste a real review from a Little Buds family here (for example, from Google).', name: 'Parent name', bg: '#DDE9C3' },
+    { text: 'PLACEHOLDER: paste a real review from a Little Buds family here (for example, from Google).', name: 'Parent name', bg: '#FAE39C' },
+    { text: 'PLACEHOLDER: paste a real review from a Little Buds family here (for example, from Google).', name: 'Parent name', bg: '#F9CDBB' }
+  ];
+
   var NAV = [
     { label: 'Home', href: '/' },
     { label: 'About Us', items: ABOUT },
@@ -126,6 +134,29 @@
     '</div></section>';
   }
 
+  var LEAF_QUOTE = '<svg width="70" height="36" viewBox="0 0 46 24" class="lb-review-leaf" aria-hidden="true"><path d="M2 20 Q10 2 24 6 Q18 20 2 20 Z" fill="#7C8D64"/><path d="M2 20 Q12 8 24 6" stroke="#4B5D3A" stroke-width="1" fill="none"/><path d="M22 20 Q30 4 44 8 Q38 22 22 20 Z" fill="#7C8D64"/><path d="M22 20 Q32 10 44 8" stroke="#4B5D3A" stroke-width="1" fill="none"/></svg>';
+  var ARROW_LEFT = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>';
+  var ARROW_RIGHT = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>';
+
+  function reviews() {
+    return '<section class="lb-reviews">' +
+      '<div class="wrap">' +
+        '<div class="section-head reveal"><div class="eyebrow center"><h2 class="h2">What families are saying</h2></div></div>' +
+        '<div class="lb-review-card reveal" id="lb-review-card">' +
+          LEAF_QUOTE +
+          '<div class="lb-review-text-wrap"><p class="lb-review-text" id="lb-review-text" aria-live="polite"></p></div>' +
+          '<div class="lb-review-name" id="lb-review-name"></div>' +
+          '<a href="' + MAP_HREF + '" target="_blank" rel="noopener" class="lb-review-more">Read More Reviews &rarr;</a>' +
+        '</div>' +
+        '<div class="lb-review-nav">' +
+          '<button type="button" class="lb-review-prev" aria-label="Previous review">' + ARROW_LEFT + '</button>' +
+          '<span class="lb-review-count" id="lb-review-count"></span>' +
+          '<button type="button" class="lb-review-next" aria-label="Next review">' + ARROW_RIGHT + '</button>' +
+        '</div>' +
+      '</div>' +
+    '</section>';
+  }
+
   function footer(el) {
     var list = function (items) { return '<ul>' + items.map(function (it) { return '<li><a href="' + it.href + '">' + it.label + '</a></li>'; }).join('') + '</ul>'; };
     var explore = [
@@ -157,7 +188,7 @@
   // ---- render placeholders ----
   document.querySelectorAll('[data-lb]').forEach(function (el) {
     var kind = el.getAttribute('data-lb');
-    var html = kind === 'header' ? header() : kind === 'cta' ? cta(el) : kind === 'contact' ? contact() : kind === 'footer' ? footer(el) : '';
+    var html = kind === 'header' ? header() : kind === 'cta' ? cta(el) : kind === 'contact' ? contact() : kind === 'reviews' ? reviews() : kind === 'footer' ? footer(el) : '';
     el.outerHTML = html;
   });
 
@@ -196,6 +227,31 @@
     });
     hdr.querySelectorAll('.lb-mobile a').forEach(function (a) {
       a.addEventListener('click', function () { hdr.classList.remove('menu-open'); burger.setAttribute('aria-expanded', 'false'); });
+    });
+  }
+
+  // ---- reviews carousel ----
+  var reviewCard = document.getElementById('lb-review-card');
+  if (reviewCard) {
+    var reviewTextEl = document.getElementById('lb-review-text');
+    var reviewNameEl = document.getElementById('lb-review-name');
+    var reviewCountEl = document.getElementById('lb-review-count');
+    var reviewIndex = 0;
+    var renderReview = function () {
+      var r = REVIEWS[reviewIndex];
+      reviewTextEl.textContent = '“' + r.text + '”';
+      reviewNameEl.textContent = r.name;
+      reviewCountEl.textContent = (reviewIndex + 1) + ' / ' + REVIEWS.length;
+      reviewCard.style.background = r.bg;
+    };
+    renderReview();
+    document.querySelector('.lb-review-prev').addEventListener('click', function () {
+      reviewIndex = (reviewIndex - 1 + REVIEWS.length) % REVIEWS.length;
+      renderReview();
+    });
+    document.querySelector('.lb-review-next').addEventListener('click', function () {
+      reviewIndex = (reviewIndex + 1) % REVIEWS.length;
+      renderReview();
     });
   }
 
